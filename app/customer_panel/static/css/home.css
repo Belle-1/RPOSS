@@ -1,0 +1,184 @@
+
+.welcome-section {
+	position: relative;
+}
+
+.welcome-section div{
+	position: absolute;
+    top: 55%;
+    left: 10%;
+}
+
+.menu-section {
+	position: relative;
+    text-align: center;
+}
+
+.menu-section div {
+	position: absolute;
+    top: 30%;
+    margin: auto;
+    left:0;
+    right: 0;
+}
+
+.menu-section div p{
+	font-size: 2.5vw;
+    color: aliceblue;
+}
+
+.nav-item {
+    padding: 0px 20px 0px 20px;
+}
+
+.line {
+    width: 50px;
+    height: 0px;
+    border-bottom: 2px solid #696969;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 500px)  {
+    .welcome-section div{
+        position: absolute;
+        top: 40%;
+        left: 6%;
+    }
+
+    .welcome-section h1{
+        font-size: 5vw;
+    }
+
+    .welcome-section h3{
+        font-size: 4vw;
+    }
+
+    .welcome-section .btn-lg{
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        border-radius: 0.2rem;
+    }
+
+    .menu-section div {
+        position: absolute;
+        top: 13%;
+        margin: auto;
+        left:0;
+        right: 0;
+    }
+
+    .menu-section div p{
+        font-size: 3.5vw;
+        color: aliceblue;
+    }
+
+    .menu-section .btn-lg{
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        border-radius: 0.2rem;
+    }
+
+}
+
+
+/**/
+/* Style all font awesome icons */
+.fa {
+    color: black;
+    font-size: 30px;
+    text-decoration: none;
+    text-align: center;
+}
+
+/* Hover effect */
+.location-section a {
+    color: black;
+    text-decoration: none;
+}
+
+.fa-facebook:hover {
+    background-color: #3d5b99;
+}
+
+.fa-twitter:hover {
+    background-color: #00aced;
+}
+
+.fa-instagram:hover {
+    background-color: #e95950;
+}
+
+.fa-snapchat-ghost:hover {
+    background-color: #fffc00;
+}
+
+.fa-yelp:hover {
+    background-color: #d32323;
+}
+
+/* Specific color for each brand */
+.fa-facebook {
+    padding:10px 14px;
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    transition: .5s;
+    background-color: #f3f3f3;
+}
+
+.fa-twitter {
+    padding:10px 12px;
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    transition: .5s;
+    background-color: #f3f3f3;
+}
+
+.fa-instagram {
+    padding:10px 14px;
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    transition: .5s;
+    background-color: #f3f3f3;
+}
+
+.fa-snapchat-ghost {
+    padding:10px 14px;
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    transition: .5s;
+    background-color: #f3f3f3;
+}
+
+.fa-yelp {
+    padding:10px 14px;
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    transition: .5s;
+    background-color: #f3f3f3;
+}
+
+body {
+    background-color: #f3f3f3;
+}
+
+.contact-section {
+    background-color: burlywood;
+		height: 600px;
+}
+
+.contact-section h3 {
+    padding-top: 50px;
+}

@@ -1,0 +1,42 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<!doctype html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!-- Responsive meta tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Log In</title>
+	  <!-- Bootstrap core CSS -->
+    <link href="../static/css/lib/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      .form-container {
+        width: 370px;
+        margin: 0 auto;
+      }
+    </style>
+</head>
+<body class="bg-light">
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-md navbar-light bg-faded">
+    <h1 class="navbar-brand mb-0"><img src="../RPOSS/owner_panel/static/img/home_page/logo.jpg" width="30" height="30" class="d-inline-block align-top" alt=""> Restaurant Name</h1>
+  </nav> <!-- End of Navigation Bar -->
+  <!-- Logging in Form -->
+  <div class="container mt-5">
+    <h1 class="text-center display-2 text-uppercase text-center">log in</h1>
+    <h4 class="text-center font-weight-light mt-3 text-center">Welcome to the Restaurant Name RPOSS</h4>
+    <div class='form-container'>
+      <form class="from-group mt-4" action="/RPOSS/login" method="post">
+        {{ form.csrf_token }}
+        {{ wtf.form_field(form.user_name, class="form-control") }}
+        {{ wtf.form_field(form.password) }}
+        <button class="btn btn-lg btn-primary">Log in</button>
+      </form>
+    </div>
+  </div><!-- End of Logging in Form -->
+<!-- Bootstrap JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="../static/js/lib/jquery-3.3.1.min.js"></script>
+<script src="../static/js/lib/bootstrap.min.js"></script>
+</body>
+</html>

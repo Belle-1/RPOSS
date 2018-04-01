@@ -1,0 +1,76 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<!doctype html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!-- Responsive meta tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Owner Panel - System Interfaces</title>
+	  <!-- Bootstrap core CSS -->
+    <link href="{{ url_for("owner_panel.static", filename="css/lib/bootstrap.min.css") }}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{{ url_for("owner_panel.static", filename="css/owner_panel.css") }}">
+</head>
+<body class="bg-light">
+<!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-md navbar-light bg-faded">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <h1 class="navbar-brand mb-0"><img src="{{ url_for("owner_panel.static", filename="img/home_page/logo.jpg") }}" width="30" height="30" class="d-inline-block align-top" alt=""> Restaurant Name</h1>
+    <div class="collapse navbar-collapse navbar-right" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Log out</a>
+        </li>
+      </ul>
+    </div>
+  </nav> <!-- End of Navigation Bar -->
+
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-sm-2 mt-3">
+        <div class="list-group">
+          <a href="{{ url_for('owner_panel.restaurant') }}" class="list-group-item list-group-item-action">Restaurant</a>
+          <a href="{{ url_for('owner_panel.menu') }}" class="list-group-item list-group-item-action">Menu</a>
+          <a href="{{ url_for('owner_panel.orders_hampers') }}" class="list-group-item list-group-item-action">Orders Hampers</a>
+          <a href="{{ url_for('owner_panel.employees_registration') }}" class="list-group-item list-group-item-action">Employees Registration</a>
+          <a href="{{ url_for('owner_panel.system_interfaces') }}" class="list-group-item list-group-item-action active">System Interfaces</a>
+        </div>
+      </div>
+      <div class="col-sm-10 mt-3"><!-- Container -->
+        <div class="hello-section"><!-- Hello Section -->
+          <h3 class="font-weight-light">Hello, Owner.</h3>
+        </div><!-- /.Hello Section -->
+        <div class="options-container w-100 mt-3 pt-3 pl-3 pb-3 pr-3"><!-- Options Container -->
+          <div class="main-column"><!-- Main Column -->
+            <h3 class="text-uppercase font-weight-bold">online ordering functionality</h3>
+            <hr class="line mt-3">
+            <div class="code-panel pl-3 pt-3 pb-3 pr-3">
+              <button class="btn bt-lg btn-primary text-uppercase mb-2">order online</button>
+              <br>
+              <code class="bg-light">&lt;button type="button" name="button"&gt;ORDER ONLINE&lt;/button&gt;</code>
+            </div>
+          </div><!-- /.Main Column -->
+          <div class="sidebar-column ml-5 mt-3"><!-- Sidebar Column -->
+            <h6 class="text-uppercase mt-4">order online!</h6>
+            <div class="bs-callout bs-callout-tip">
+              <h4 class="text-capitalize">ordering online</h4>
+              <p>Copy and paste this code to your HTML page and your customers will be able to place orders online!.</p>
+            </div>
+          </div><!-- /.Sidebar Column -->
+        </div><!-- /.Options Container -->
+      </div><!-- /.Container -->
+    </div>
+  </div>
+
+<!-- Bootstrap JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="{{ url_for("owner_panel.static", filename="js/lib/jquery-3.3.1.min.js") }}"></script>
+<script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+<script src="{{ url_for("owner_panel.static", filename="js/lib/bootstrap.min.js") }}"></script>
+<!-- Scroll Reveal Library -->
+<script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!-- Responsive meta tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Restaurant Menu</title>
+	  <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{{ url_for('customer.static', filename='css/lib/bootstrap.min.css') }}">
+    <!-- Owl Corousel (https://github.com/OwlCarousel2/OwlCarousel2) -->
+    <link rel="stylesheet" href="{{ url_for('customer.static', filename='css/lib/owl.carousel.min.css') }}">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{{ url_for('customer.static', filename='css/menu.css') }}">
+</head>
+<script>
+  var delivery_taxes = {{ delivery_taxes }};
+  var delivery_charges = {{ delivery_charges }};
+  var min_amount = {{ min_amount }};
+  var max_amount = {{ max_amount }};
+</script>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="menu-items bg-light col-lg-8 pt-5">
+      <h1 class="text-uppercase ml-2">select menu items</h1>
+      <!-- Menu Items Section -->
+      {% raw %}
+      <div id="categories" class="row mt-4 container"></div><!-- Carousels -->
+      {% endraw %}
+    </div><!-- End of Menu Items Section -->
+
+    <!-- Checkout 1 section -->
+      <div class="checkout1 col-lg-4 bg-dark text-white pt-5">
+        <h4 class="text-uppercase">my order / <small id="my-order" class="text-muted">0 items $0.00</small></h4>
+        <button id="clear-order" class=" btn-sm btn-outline-light text-white">clear menu</button>
+        <br>
+        <div class="table-container"><!-- Order Items -->
+          <table class="table table-hover">
+            <tbody id='display-order'></tbody>
+          </table>
+        </div><!-- /.Order Items -->
+        <hr class="line">
+        <div class="bill"><!--Bill Section -->
+          <table class="table table-hover">
+            <tbody>
+              <tr>
+                <td class="align-middle text-left font-weight-light">Subtotal<br>Delivery Charges<br>Tax</td>
+                <td id="sub-deli-tax" class="align-middle text-right font-weight-light"></td>
+              </tr>
+              <tr>
+                <th class="align-middle text-left text-uppercase">total</th>
+                <th id="total" class="align-middle text-right"></th>
+              </tr>
+            </tbody>
+          </table>
+        </div><!--/.Bill Section -->
+        <form action="/few_steps" method="post">
+          <button type="submit" class="text-uppercase btn-outline-light btn-lg btn-block next">Next</button>
+        </form>
+      </div>
+  </div>
+</div>
+<!-- Bootstrap JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script type="text/javascript" src="{{ url_for('customer.static', filename='js/lib/jquery-3.3.1.min.js') }}"></script>
+<script src="{{ url_for('customer.static', filename='js/lib/bootstrap.min.js') }}"></script>
+<!-- Owl Corousel (https://github.com/OwlCarousel2/OwlCarousel2) -->
+<script type="text/javascript" src="{{ url_for('customer.static', filename='js/lib/owl.carousel.min.js') }}"></script>
+<!-- Mustache Logic-less template -->
+<script src="https://raw.githack.com/janl/mustache.js/master/mustache.min.js"></script>
+<!-- custom javascript for this template -->
+<script type="text/javascript" src="{{ url_for('customer.static', filename='js/menu.js') }}"></script>
+<script>
+  $(function(){
+
+    function applyCarousel(){  // Owl Carousel
+      $('.owl-carousel').owlCarousel({
+        items: 5,
+        responsive:{
+          0:{items:3},
+          400:{items:2},
+          600:{items:3},
+          992:{items:4},
+          1440:{items:5},
+          }
+      });
+    };
+
+    var categories = $('#categories');  // for Mustache templating
+    function addCategory(category_name){  // returns a mustache category template
+      categories.append("<h4>" + category_name + "</h4><hr class='line'><div id='" + category_name + "-items' class='mr-3 ml owl-carousel'></div>");
+    };
+
+    function addItem(items_container_id, item){  // returns HTML mark up for a category's items
+      var items = $('#'+ items_container_id +'-items');
+      items.append("<div class='item mt-3 add-to-order' data-id='" + item.item_id
+      + "' data-name='" + item.item_name
+      + "' data-price='" + item.item_price
+      + "' data-size='" + item.item_size + "'><div class='text-center'><img src='http://127.0.0.1:5000/RPOSS/owner_panel/" + item.item_image
+      + "' class='img-responsive img-circle' width='120' height='120'><p class='text-capitalize'>" + item.item_name
+      + "(" + item.item_size
+      + ")</p><p>$" + item.item_price + "</p></div></div>");
+    };
+
+    // requesting all menu items from server
+    $.ajax({
+      type: 'GET',
+      url: '/get_menu_items',
+      success: function(categories){
+        $.each(categories, function(i, category_items){
+          addCategory(category_items["0"].item_category);
+          $.each(category_items, function(i, item){
+            addItem(category_items["0"].item_category, item);
+          });
+        });
+        applyCarousel();
+      },
+      error: function(){
+        alert("error loading menu items");
+      }
+    });
+  });
+  displayOrder()
+</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!-- Responsive meta tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Progressive Panel - All orders</title>
+	  <!-- Bootstrap core CSS -->
+    <link href="{{ url_for("staff.static", filename="css/lib/bootstrap.min.css") }}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{{ url_for("staff.static", filename="css/all_orders.css") }}">
+</head>
+<body class="bg-light">
+<!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-md navbar-light bg-faded">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <h1 class="navbar-brand mb-0"><img src="{{ url_for("owner_panel.static", filename="img/home_page/logo.jpg") }}" width="30" height="30" class="d-inline-block align-top" alt=""> Restaurant Name</h1>
+    <div class="collapse navbar-collapse navbar-right" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Log out</a>
+        </li>
+      </ul>
+    </div>
+  </nav> <!-- End of Navigation Bar -->
+
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-sm-2 mt-3">
+        <div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action active">All Orders</a>
+          <a href="#" class="list-group-item list-group-item-action">Pending Orders <span class="badge badge-warning badge-pill">14</span></a>
+          <a href="#" class="list-group-item list-group-item-action">In Progress Orders <span class="badge badge-success badge-pill">14</span></a>
+          <a href="#" class="list-group-item list-group-item-action">Finished Orders</a>
+          <a href="#" class="list-group-item list-group-item-action">Missed Orders</a>
+        </div>
+      </div>
+      <div class="col-sm-10 mt-3">
+        <!-- Hello Section -->
+        <div class="hello-section">
+          <h3 class="font-weight-light">Hello, EmployeeName.</h3>
+        </div><!-- /.Hello Section -->
+        <!-- All Orders Table -->
+        <div class="table-responsive">
+	        <table class="table table-striped table-responsive-sm table-hover mt-3">
+	          <thead>
+	            <tr>
+	              <th scope="col align-middle">Order ID</th>
+	              <th scope="col">Confirmed/rejected by</th>
+	              <th scope="col">Status</th>
+	              <th scope="col">Customer</th>
+	              <th scope="col">Time made</th>
+	              <th scope="col">Order method</th>
+	              <th scope="col">Time confirmed/rejected</th>
+	            </tr>
+	          </thead>
+	          <tbody>
+	            <tr>
+	              <th scope="row" class="align-middle">#2221131</th>
+	              <td class="align-middle">EmployeeName</td>
+	              <td class="align-middle text-capitalize capsule capsule-pending">pending</td>
+	              <td class="align-middle">CustomrName<br>(000)-000000000</td>
+	              <td class="align-middle">Feb 22, 2018<br>11:38 p.m.</td>
+	              <td class="align-middle text-capitalize capsule capsule-pick-up">pick-up</td>
+	              <td class="align-middle">Feb 22, 2018<br>11:39 p.m.</td>
+	            </tr>
+	            <tr>
+	              <th scope="row">#2321148</th>
+	              <td>EmployeeName</td>
+	              <td class="text-capitalize capsule capsule-in-progress">in-progress</td>
+	              <td>CustomrName<br>(000)-000000000</td>
+	              <td>Feb 22, 2018<br>11:38 p.m.</td>
+	              <td class="text-capitalize capsule capsule-delivery">delivery</td>
+	              <td>Feb 22, 2018<br>11:39 p.m.</td>
+	            </tr>
+	            <tr>
+	              <th scope="row">#2221131</th>
+	              <td>EmployeeName</td>
+	              <td class="text-capitalize capsule capsule-delivered">delivered</td>
+	              <td>CustomrName<br>(000)-000000000</td>
+	              <td>Feb 22, 2018<br>11:38 p.m.</td>
+	              <td class="text-capitalize capsule capsule-pick-up">pick-up</td>
+	              <td>Feb 22, 2018<br>11:39 p.m.</td>
+	            </tr>
+	            <tr>
+	              <th scope="row">#2221131</th>
+	              <td>EmployeeName</td>
+	              <td class="text-capitalize capsule capsule-rejected">rejected</td>
+	              <td>CustomrName<br>(000)-000000000</td>
+	              <td>Feb 22, 2018<br>11:38 p.m.</td>
+	              <td class="text-capitalize capsule capsule-delivery">delivery</td>
+	              <td>Feb 22, 2018<br>11:39 p.m.</td>
+	            </tr>
+	            <tr>
+	              <th scope="row">#2221131</th>
+	              <td>EmployeeName</td>
+	              <td class="text-capitalize capsule capsule-missed">missed</td>
+	              <td>CustomrName<br>(000)-000000000</td>
+	              <td>Feb 22, 2018<br>11:38 p.m.</td>
+	              <td class="text-capitalize capsule capsule-delivery">delivery</td>
+	              <td>Feb 22, 2018<br>11:39 p.m.</td>
+	            </tr>
+	          </tbody>
+	        </table><!-- /.All Orders Table -->
+    	</div>
+      </div>
+    </div>
+  </div>
+
+<!-- Bootstrap JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="{{ url_for("staff.static", filename="js/lib/jquery-3.3.1.min.js") }}"></script>
+<script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+<script src="{{ url_for("staff.static", filename="js/lib/bootstrap.min.js") }}"></script>
+<!-- Scroll Reveal Library -->
+<script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+<!-- Custom Javascript for This Template  -->
+<script src="{{ url_for("staff.static", filename="js/#") }}"></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<!doctype html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!-- Responsive meta tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Few Steps</title>
+	  <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('customer.static', filename='css/lib/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{{ url_for('customer.static', filename='css/few_steps.css') }}">
+</head>
+<script>
+  var delivery_taxes = {{ delivery_taxes }};
+  var delivery_charges = {{ delivery_charges }};
+  var min_amount = {{ min_amount }};
+  var max_amount = {{ max_amount }};
+</script>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="form-section bg-light col-lg-8 pt-5">
+      <h1 class="text-uppercase">a few steps to send this order</h1>
+      <!-- Form Section -->
+      <form class="form-group" action="/few_steps" method="post">
+        <div class="row mt-5 container">
+          <div class="col-5">
+            <!-- PERSONAL INFORMATIONS -->
+            <h4>Personal Inforamtion</h4>
+            {{ customer_details_form.csrf_token }}
+            {{ wtf.form_field(customer_details_form.customer_name) }}
+            {{ wtf.form_field(customer_details_form.customer_phone) }}
+            {{ wtf.form_field(customer_details_form.customer_email) }}
+              <!-- DELIVERY METHOD  -->
+            <h4 class="mt-2">Order Method</h4>
+              {{ wtf.form_field(customer_details_form.order_method) }}
+              {{ wtf.form_field(customer_details_form.place_order, class="btn btn-secondary btn-block text-uppercase mt-5") }}
+          </div>
+          <div class="col-5 delivery-additional-fields">
+            {{ wtf.form_field(customer_details_form.address_line1) }}
+            {{ wtf.form_field(customer_details_form.address_line2) }}
+            {{ wtf.form_field(customer_details_form.state) }}
+            {{ wtf.form_field(customer_details_form.zipcode) }}
+            {{ wtf.form_field(customer_details_form.notes) }}
+          </div>
+          </form>
+        </div>
+    </div><!-- END Form Section -->
+
+    <!-- Checkout 1 section -->
+      <div class="checkout2 col-lg-4 bg-dark text-white pt-5">
+        <h4 class="text-uppercase">my order / <small class="text-muted">0 items $0.00</small></h4>
+        <br>
+        <!-- Order Items -->
+        <div class="table-container">
+          <table class="table table-hover">
+            <tbody id='display-order2'>
+              <tr>
+                <th class="fit align-middle"><img src="../../owner_panel/static/img/menu_items/38913820334_8073ba511e_q.jpg" class="img-responsive img-circle" width="75" height="75"></th>
+                <td class="align-middle"><span class="text-uppercase">item name</span><br>$00.00</td>
+                <td class="align-middle text-center"> 111 </td>
+                <td class="align-middle fit text-right">$00.00</td>
+              </tr>
+              <tr>
+                <th class="fit align-middle"><img src="../../owner_panel/static/img/menu_items/38913820334_8073ba511e_q.jpg" class="img-responsive img-circle" width="75" height="75"></th>
+                <td class="align-middle"><span class="text-uppercase">item name</span><br>$00.00</td>
+                <td class="align-middle text-center"> 111 </td>
+                <td class="align-middle fit text-right">$00.00</td>
+                </tr>
+            </tbody>
+          </table>
+        </div><!-- /.Order Items -->
+        <hr class="line">
+        <div class="bill"> <!-- Bill Section -->
+          <table class="table table-hover">
+            <tbody>
+              <tr>
+                <td class="align-middle text-left font-weight-light">Subtotal<br>Delivery Charges<br>Tax</td>
+                <td id="sub-deli-tax" class="align-middle text-right font-weight-light"></td>
+              </tr>
+              <tr>
+                <th class="align-middle text-left text-uppercase">total</th>
+                <th  id="total" class="align-middle text-right"></th>
+              </tr>
+            </tbody>
+          </table>
+        </div> <!--/.Bill Section -->
+      </div>
+  </div>
+</div>
+
+<!-- Bootstrap JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="{{ url_for('customer.static', filename='js/lib/jquery-3.3.1.min.js') }}"></script>
+<script src="{{ url_for('customer.static', filename='js/lib/bootstrap.min.js') }}"></script>
+<!-- custome javascript for this template -->
+<script type="text/javascript" src="{{ url_for('customer.static', filename='js/menu.js') }}"></script>
+<script>
+  $(function(){
+    // show/hide delivery fields based on customer's choice
+    var deliveryAditionalFields = $('.delivery-additional-fields');
+    var address_line1_field = $('#address_line1')
+    var address_line2_field = $('#address_line2')
+    var state_field = $('#state')
+    var zipcode_field = $('#zipcode')
+    var notes_field = $('#notes')
+
+    deliveryAditionalFields.css('display', 'none');
+    $('.form-group').delegate('input', 'click', function(){
+      var optionChecked = $(this).attr('id');
+      if (optionChecked == 'order_method-0') {
+        deliveryAditionalFields.css('display', 'none');
+        // remove required / add formnovalidate to each filed
+        address_line1_field.closest('input').attr('formnovalidate', 'formnovalidate');
+        address_line1_field.closest('input').removeAttr('required');
+        address_line2_field.closest('input').attr('formnovalidate', 'formnovalidate');
+        address_line2_field.closest('input').removeAttr('required');
+        state_field.closest('input').attr('formnovalidate', 'formnovalidate');
+        state_field.closest('input').removeAttr('required');
+        zipcode_field.closest('input').attr('formnovalidate', 'formnovalidate');
+        zipcode_field.closest('input').removeAttr('required');
+        notes_field.closest('textarea').attr('formnovalidate', 'formnovalidate');
+        notes_field.closest('textarea').removeAttr('required');
+      }else if (optionChecked == 'order_method-1') {
+        deliveryAditionalFields.show();
+
+        address_line1_field.closest('input').removeAttr('formnovalidate');
+        address_line2_field.closest('input').removeAttr('formnovalidate');
+        state_field.closest('input').removeAttr('formnovalidate');
+        zipcode_field.closest('input').removeAttr('formnovalidate');
+        notes_field.closest('input').removeAttr('formnovalidate');
+      };
+    });
+  });
+
+</script>
+</body>
+</html>

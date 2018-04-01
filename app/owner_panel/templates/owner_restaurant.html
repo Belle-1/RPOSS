@@ -1,0 +1,165 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<!doctype html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!-- Responsive meta tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Owner Panel - Restaurant</title>
+	  <!-- Bootstrap core CSS -->
+    <link href="{{ url_for("owner_panel.static", filename="css/lib/bootstrap.min.css") }}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{{ url_for("owner_panel.static", filename="css/owner_panel.css") }}">
+</head>
+<body class="bg-light">
+<!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-md navbar-light bg-faded">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <h1 class="navbar-brand mb-0"><img src="{{ url_for("owner_panel.static", filename="img/home_page/logo.jpg") }}" width="30" height="30" class="d-inline-block align-top" alt=""> Restaurant Name</h1>
+    <div class="collapse navbar-collapse navbar-right" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Log out</a>
+        </li>
+      </ul>
+    </div>
+  </nav> <!-- End of Navigation Bar -->
+
+  <div class="container mt-3">
+    <!-- flashes -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %} <!-- End of flashes -->
+    <div class="row">
+      <div class="col-sm-2 mt-3">
+        <div class="list-group">
+          <a href="{{ url_for('owner_panel.restaurant') }}" class="list-group-item list-group-item-action active">Restaurant</a>
+          <a href="{{ url_for('owner_panel.menu') }}" class="list-group-item list-group-item-action">Menu</a>
+          <a href="{{ url_for('owner_panel.orders_hampers') }}" class="list-group-item list-group-item-action">Orders Hampers</a>
+          <a href="{{ url_for('owner_panel.employees_registration') }}" class="list-group-item list-group-item-action">Employees Registration</a>
+          <a href="{{ url_for('owner_panel.system_interfaces') }}" class="list-group-item list-group-item-action">System Interfaces</a>
+        </div>
+      </div>
+      <div class="col-sm-10 mt-3"><!-- Container -->
+        <div class="hello-section"><!-- Hello Section -->
+          <h3 class="font-weight-light">Hello, Owner.</h3>
+        </div><!-- /.Hello Section -->
+        <div class="options-container w-100 mt-3 pt-3 pl-3 pb-3 pr-3"><!-- Options Container -->
+          <div class="main-column"><!-- Main Column -->
+            <h3 class="text-uppercase font-weight-bold">base information</h3>
+            <hr class="line mt-3">
+            <form class="from-group" action="/RPOSS/owner_panel/restaurant" method="post" enctype="multipart/form-data">
+              {{ base_form.csrf_token }}
+              {{ wtf.form_field(base_form.restaurant_name) }}
+              {{ wtf.form_field(base_form.restaurant_about) }}
+              {{ wtf.form_field(base_form.restaurant_welcome_img) }}
+              {{ wtf.form_field(base_form.restaurant_address_line) }}
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  {{ wtf.form_field(base_form.restaurant_city) }}
+                </div>
+                <div class="form-group col-md-4">
+                  {{ wtf.form_field(base_form.restaurant_country) }}
+                </div>
+                <div class="form-group col-md-4">
+                  {{ wtf.form_field(base_form.restaurant_zipcode) }}
+                </div>
+              </div>
+              {{ wtf.form_field(base_form.restaurant_email) }}
+              {{ wtf.form_field(base_form.restaurant_phone) }}
+              {{ wtf.form_field(base_form.restaurant_logo) }}
+              {{ wtf.form_field(base_form.base_submit, class="btn btn-primary text-uppercase float-right") }}
+              <!-- <button class="btn btn-primary text-uppercase">commit changes</button> -->
+            </form>
+          </div><!-- /.Main Column -->
+          <div class="sidebar-column ml-5 mt-3"><!-- Sidebar Column -->
+            <h6 class="text-uppercase mt-4">general information</h6>
+            <div class="bs-callout bs-callout-tip bs-callout-base">
+              <h4 class="text-capitalize font-weight-light">restaurant name</h4>
+              <p>This name will be used in the navigation bar in the restaurant built-in home page, notification messages sent to the customers, and on top of the receipt given to the customer.</p>
+              <h4 class="text-capitalize font-weight-light">restaurant about</h4>
+              <p>This section will show up in the About section in the built-in restaurant home page.</p>
+              <h4 class="text-capitalize font-weight-light">address line, city, country, ZIP code</h4>
+              <p>These informations will show in the restaurant built-in Location section and on the receipt.</p>
+              <h4 class="text-capitalize font-weight-light">restaurant email address</h4>
+              <p>This email address will serve as a destination for the Contact us section and the Location section in the restaurant built-in home page, it will also shows on the receipt</p>
+              <h4 class="text-capitalize font-weight-light">restaurant phone number</h4>
+              <p>This phone number will be included in the receipt and in the Location section of the restaurant built-in home page</p>
+              <h4 class="text-capitalize font-weight-light">restaurant logo</h4>
+              <p>This logo will show in the built-in restaurant home page in the navigation bar, it will also be included in the receipt.</p>
+            </div>
+          </div><!-- /.Sidebar Column -->
+        </div><!-- Options Container -->
+        <!-- OPENING HOURS -->
+        <div class="options-container w-100 mt-3 pt-3 pl-3 pb-3 pr-3"><!-- Options Container -->
+          <div class="main-column"><!-- Main Column -->
+            <h3 class="text-uppercase font-weight-bold">opening hours</h3>
+            <hr class="line mt-3">
+            <form class="form-group" action="/RPOSS/owner_panel/restaurant" method="post">
+              {{ opening_form.csrf_token }}
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  {{ wtf.form_field(opening_form.from_hour) }}
+                </div>
+                <div class="form-group col-md-6">
+                  {{ wtf.form_field(opening_form.to_hour) }}
+                </div>
+              </div>
+              {{ wtf.form_field(opening_form.opening_days) }}
+              <p><small class="text-dark text-muted">* press ctrl to select multiple days.</small></p>
+              {{ wtf.form_field(opening_form.opening_submit, class="btn btn-primary float-right text-uppercase") }}
+            </form>
+          </div><!-- /.Main Column -->
+          <div class="sidebar-column ml-5 mt-3"><!-- Sidebar Column -->
+            <h6 class="text-uppercase mt-4">openning and closing hours</h6>
+            <div class="bs-callout bs-callout-tip">
+              <!-- oppening hours -->
+              <h4 class="text-capitalize font-weight-light">set working days/times</h4>
+              <p>These values will determine when a customer can place an order</p>
+            </div>
+          </div><!-- /.Sidebar Column -->
+        </div><!-- Options Container -->
+        <!-- SOCIAL MEDIA -->
+        <div class="options-container w-100 mt-3 mb-3 pt-3 pl-3 pb-3 pr-3"><!-- Options Container -->
+          <div class="main-column"><!-- Main Column -->
+            <h3 class="text-uppercase font-weight-bold">social media</h3>
+            <hr class="line mt-3">
+            <form class="form-group" action="/RPOSS/owner_panel/restaurant" method="post">
+              {{ media_form.csrf_token }}
+              {{ wtf.form_field(media_form.restaurant_facebook) }}
+              {{ wtf.form_field(media_form.restaurant_twitter) }}
+              {{ wtf.form_field(media_form.restaurant_snapchat) }}
+              {{ wtf.form_field(media_form.restaurant_instagram) }}
+              {{ wtf.form_field(media_form.restaurant_yelp) }}
+              {{ wtf.form_field(media_form.media_submit, class="btn btn-primary text-uppercase float-right") }}
+            </form>
+          </div><!-- /.Main Column -->
+          <div class="sidebar-column ml-5 mt-3"><!-- Sidebar Column -->
+            <h6 class="text-uppercase mt-4">restaurant social media</h6>
+            <div class="bs-callout bs-callout-tip">
+              <!-- socail media -->
+              <h4 class="text-capitalize font-weight-light">provide rich customer experience</h4>
+              <p>Provide restaurants social media accounts. those accounts will be included in the built-in location section of the restaurant built-in home page.</p>
+            </div>
+          </div><!-- /.Sidebar Column -->
+        </div><!-- Options Container -->
+      </div><!-- /.Container -->
+    </div>
+  </div>
+
+<!-- Bootstrap JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="{{ url_for("owner_panel.static", filename="js/lib/jquery-3.3.1.min.js") }}"></script>
+<script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+<script src="{{ url_for("owner_panel.static", filename="js/lib/bootstrap.min.js") }}"></script>
+<!-- Scroll Reveal Library -->
+<script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+</body>
+</html>

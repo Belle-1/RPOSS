@@ -1,0 +1,117 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<!doctype html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!-- Responsive meta tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Restaurant Name</title>
+	  <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('customer.static', filename='css/lib/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{{ url_for('customer.static', filename='css/home.css') }}">
+    <!-- Icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style type="text/css">
+      .form-container {
+        width: 360px;
+        margin: 0 auto;
+      }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-md navbar-light bg-faded">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <h1 class="navbar-brand mb-0"><img src="{{ url_for("owner_panel.static", filename="img/home_page/logo.jpg") }}" width="30" height="30" class="d-inline-block align-top" alt=""> Restaurant Name</h1>
+    <div class="collapse navbar-collapse navbar-right" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#menu">menu</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#about">about</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#location">location</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#contact">contact us</a>
+        </li>
+      </ul>
+    </div>
+  </nav> <!-- END Navigation Bar -->
+<!-- Welcome Section -->
+  <div class="welcome-section">
+  	<img src="{{ url_for("owner_panel.static", filename="img/home_page/welcome.jpg") }}" class="img-fluid" alt="Responsive image">
+    <div>
+  	<h3 class="scroll text-uppercase font-weight-bold">welcome to</h3>
+  	<h1 class="scroll text-uppercase font-weight-bold">restaurant name</h1>
+    <a href="{{ url_for('customer.menu') }}" class="scroll btn btn-lg btn-outline-secondary" name="online-ordering">order online</a>
+    </div>
+  </div><!-- END Welcome Section -->
+<!-- About Section -->
+  <div id="about" class="about-section container text-center mt-5">
+    <h3 class="scroll text-uppercase">about us</h3>
+    <hr class="scroll line">
+    <p class="scroll">Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magnaaliqua. Ut enim ad minim veniam, quis nostrud exercitationullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velitesse cillum dolore eu fugiat nulla pariatur. Excepteur sintoccaecat cupidatat non proident, sunt in culpa qui officiadeserunt mollit anim id est laborum.</p>
+    <h6 class="scroll">friday to sunday, 9am-10pm</h6>
+  </div><!-- END About Section -->
+<!-- Menu Section -->
+  <div id="menu" class="menu-section mt-5">
+    <img src="{{ url_for("owner_panel.static", filename="img/home_page/menu.jpg") }}" id="menu-img" class="img-fluid" alt="Responsive image">
+      <div class="scroll container text-center">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim datat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <hr class="scroll line">
+        <a href="{{ url_for('customer.menu') }}" class="scroll btn btn-lg btn-secondary" name="online-ordering">go to menu</a>
+      </div>
+  </div><!-- END Menu Section -->
+<!-- Location Section -->
+  <div id="location" class="loaction-section scroll mt-5 text-center">
+    <h3 class="text-uppercase">our location</h3>
+    <hr class="line">
+    <p>
+      address line
+      <br>city, country, ZIP code
+      <br>friday to sunday, 9am-10pm
+      <br>phone: <small class="text-muted">+(000)-0000000</small>
+      <br>E-mail: <small class="text-muted">restaurantname@domain.com</small>
+    </p>
+    <a href="www.facebook.com/" class="fa fa-facebook"></a>
+    <a href="www.twitter.com/" class="fa fa-twitter"></a>
+    <a href="www.instagram.com/" class="fa fa-instagram"></a>
+    <a href="www.snapchat.com/" class="fa fa-snapchat-ghost"></a>
+    <a href="www.yelp.com/" class="fa fa-yelp"></a>
+  </div><!-- END Location Section -->
+<!-- Contact us Section -->
+  <div id="contact" class="contact-section mt-5">
+    <h3 class="scroll text-uppercase text-center">contact us</h3>
+    <hr class="scroll line text-center ">
+    <div class="form-container">
+      <form class="form-group" action="/" method="post">
+        {{ contact_us_form.csrf_token }}
+        {{ wtf.form_field(contact_us_form.customer_name) }}
+        {{ wtf.form_field(contact_us_form.customer_phone) }}
+        {{ wtf.form_field(contact_us_form.customer_email) }}
+        {{ wtf.form_field(contact_us_form.customer_message) }}
+        {{ wtf.form_field(contact_us_form.submit_message, class="btn btn-outline-secondary btn-block mt-2 text-uppercase float-right") }}
+      </form>
+    </div>
+  </div>
+<!-- Bootstrap JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="{{ url_for('customer.static', filename='js/lib/jquery-3.3.1.min.js') }}"></script>
+<script src="{{ url_for('customer.static', filename='js/lib/bootstrap.min.js') }}"></script>
+<!-- Scroll reveal Library -->
+<script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+<!-- custome javascript for this template -->
+<script src="{{ url_for('customer.static', filename='js/home.js') }}"></script>
+<script>
+    myimg = "{{ url_for('owner_panel.static', filename='img/home_page/menu.jpg') }}";
+    document.getElementById("menu-img").src = myimg;
+</script>
+</body>
+</html>

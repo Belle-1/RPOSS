@@ -1,0 +1,248 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<!doctype html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!-- Responsive meta tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Owner Panel - Menu</title>
+	  <!-- Bootstrap core CSS -->
+    <link href="{{ url_for("owner_panel.static", filename="css/lib/bootstrap.min.css") }}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{{ url_for("owner_panel.static", filename="css/owner_panel.css") }}">
+</head>
+<body class="bg-light">
+<!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-md navbar-light bg-faded">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <h1 class="navbar-brand mb-0"><img src="{{ url_for("owner_panel.static", filename="img/home_page/logo.jpg") }}" width="30" height="30" class="d-inline-block align-top" alt=""> Restaurant Name</h1>
+    <div class="collapse navbar-collapse navbar-right" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Log out</a>
+        </li>
+      </ul>
+    </div>
+  </nav> <!-- End of Navigation Bar -->
+
+  <div class="container mt-3">
+  	<!-- flashes -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %} <!-- End of flashes -->
+    <div class="row">
+      <div class="col-sm-2 mt-3">
+        <div class="list-group">
+          <a href="{{ url_for('owner_panel.restaurant') }}" class="list-group-item list-group-item-action">Restaurant</a>
+          <a href="{{ url_for('owner_panel.menu') }}" class="list-group-item list-group-item-action active">Menu</a>
+          <a href="{{ url_for('owner_panel.orders_hampers') }}" class="list-group-item list-group-item-action">Orders Hampers</a>
+          <a href="{{ url_for('owner_panel.employees_registration') }}" class="list-group-item list-group-item-action">Employees Registration</a>
+          <a href="{{ url_for('owner_panel.system_interfaces') }}" class="list-group-item list-group-item-action">System Interfaces</a>
+        </div>
+      </div>
+      <div class="col-sm-10 mt-3"><!-- Container -->
+        <div class="hello-section"><!-- Hello Section -->
+          <h3 class="font-weight-light">Hello, Owner.</h3>
+        </div><!-- /.Hello Section -->
+        <div class="options-container w-100 mt-3 pt-3 pl-3 pb-3 pr-3"><!-- Options Container -->
+          <div class="main-column"><!-- Main Column -->
+            <h3 class="text-uppercase font-weight-bold">menu setup</h3>
+            <hr class="line mt-3">
+            <form class="form-group" action="/RPOSS/owner_panel/menu" method="post" enctype="multipart/form-data">
+              {{ menu_setup_form.csrf_token }}
+              {{ wtf.form_field(menu_setup_form.restaurant_menu_image) }}
+              {{ wtf.form_field(menu_setup_form.restaurant_menu_description) }}
+              {{ wtf.form_field(menu_setup_form.menu_setup_submit, class="btn btn-primary text-uppercase float-right") }}
+            </form>
+          </div><!-- /.Main Column -->
+          <div class="sidebar-column ml-5 mt-3"><!-- Sidebar Column -->
+            <h6 class="text-uppercase mt-4">general information</h6>
+            <div class="bs-callout bs-callout-tip">
+              <!-- menu -->
+              <h4 class="text-capitalize font-weight-light">built-in menu section</h4>
+              <p>The description and the image specefied here will show up in the built-in restaurant home page.</p>
+            </div>
+          </div><!-- /.Sidebar Column -->
+        </div><!-- Options Container -->
+        <!-- MENU ITEMS -->
+        <div class="options-container w-100 mt-3 mb-3 pt-3 pl-3 pb-3 pr-3"><!-- Options Container -->
+          <div class="table-responsive"><!-- Main Column -->
+            <h3 class="text-uppercase font-weight-bold">menu items</h3>
+            <hr class="line mt-3">
+            <form class="form-group" action="/RPOSS/owner_panel/menu" method="post" enctype="multipart/form-data">
+              {{ menu_setup_form.csrf_token }}
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                {{ wtf.form_field(menu_items_form.item_name) }}
+                </div>
+                <div class="form-group col-md-4">
+                {{ wtf.form_field(menu_items_form.item_category) }}
+                </div>
+                <div class="form-group col-md-4">
+                {{ wtf.form_field(menu_items_form.item_status) }}
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  {{ wtf.form_field(menu_items_form.item_price) }}
+                </div>
+                <div class="form-group col-md-4">
+                  {{ wtf.form_field(menu_items_form.item_size) }}
+                </div>
+                <div class="form-group col-md-4">
+                  {{ wtf.form_field(menu_items_form.item_image) }}
+                </div>
+              </div>
+              {{ wtf.form_field(menu_items_form.menu_items_submit, class="btn btn-primary text-uppercase float-right mb-4") }}
+            </form>
+            <!-- All Orders Table -->
+            <table class="table table-striped table-responsive-sm table-hover mt-3">
+              <thead>
+                <tr>
+                  <th scope="col">Item ID</th>
+                  <th scope="col">Item name</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Item price</th>
+                  <th scope="col">size</th>
+                  <th scope="col">Image</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody id="items">
+                {% raw %}
+                <template id="item-template">
+                  <tr>
+                    <th>#{{item_id}}</th>
+                    <td>{{item_name}}</td>
+                    <td>{{item_category}}</td>
+                    <td>
+                      <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          {{item_status}}
+                        </button>
+                        <div class="dropdown-menu" data-id='{{item_id}}' aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="#">Active</a>
+                          <a class="dropdown-item" href="#">Inactive</a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>${{item_price}}</td>
+                    <td><h3><span class="badge badge-pill badge-s">{{item_size}}</span></h3></td>
+                    <td> <img src='{{item_image}}' width='70px' height='50px'> </td>
+                    <td><button data-id='{{item_id}}' class='btn btn-danger deleteBtn' data-name="{{item_name}}">Delete</button></td>
+                  </tr>
+                </template>
+                {% endraw %}
+              </tbody>
+            </table><!-- /.All Orders Table -->
+          </div><!-- /.Main Column -->
+        </div><!-- Options Container -->
+      </div><!-- /.Container -->
+      <!-- Delete Menu Item Modal -->
+      <div class="modal mt-5" id="itemDeletionModal">
+        <div class="modal-dialog">
+          <div class="modal-content"><!-- modal content -->
+            <div class="modal-header"><!-- modal header -->
+              <h4 class="text-capitalize">deleting menu item</span></h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div><!-- /.modal header -->
+            <div class="modal-body"><!-- modal body -->
+              Are you sure you want to delete <span id="itemName" class="font-weight-bold"></span> ?
+            </div> <!-- /.modal body -->
+            <div class="modal-footer"> <!-- modal footer -->
+              <button id="delete"  class="btn btn-secondary" data-dismiss="modal">delete</button>
+              <button class="btn btn-outline-secondary" data-dismiss="modal">cancel</button>
+            </div><!-- /.footer -->
+          </div><!-- /.modal content -->
+        </div>
+      </div><!-- /.Delete Menu Item Modal -->
+    </div>
+  </div>
+
+<!-- Bootstrap JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="{{ url_for("owner_panel.static", filename="js/lib/jquery-3.3.1.min.js") }}"></script>
+<script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+<script src="{{ url_for("owner_panel.static", filename="js/lib/bootstrap.min.js") }}"></script>
+<!-- Scroll Reveal Library -->
+<script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+<!-- Mustache Logic-less template -->
+<script src="https://raw.githack.com/janl/mustache.js/master/mustache.min.js"></script>
+<!-- Custom Javascript for This Template  -->
+<script>
+  $(function(){
+    var items = $('#items');
+    var itemTemplate = $("#item-template").html();
+
+    function addItem(item){
+      items.append(Mustache.render(itemTemplate, item));
+    };
+
+    // requesting all menu items from server
+    $.ajax({
+      type: 'GET',
+      url: '/RPOSS/owner_panel/get_menu_items',
+      success: function(items){
+        $.each(items, function(i, item){
+          addItem(item);
+        });
+      },
+      error: function(){
+        alert("error loading menu items");
+      }
+    });
+
+
+    items.delegate(".deleteBtn", "click", function(event){
+      var itemId = $(this).attr('data-id');
+      var itemName = $(this).attr('data-name');
+      var itemRecord = $(this).closest("tr");
+
+      $("#itemName").html(itemName);
+      // fire deletion modal
+      var deletionModal = $("#itemDeletionModal");
+      deletionModal.modal();
+
+      // delete item request
+      $("button#delete").on("click", function(){
+        $.ajax({
+          type: "DELETE",
+          url: "/RPOSS/owner_panel/delete_menu_item/" + itemId,
+          success: function (){
+            itemRecord.remove();
+          },
+          error: function(){
+            alert("error deleting " + itemName + " item")
+          }
+        });
+      });
+
+    });
+
+    // independent dropdown menus
+    items.delegate(".dropdown-menu", "click", function(event){
+      var status = event.target.text;
+      $(this).prev('button').text(status);
+
+      // modifying an item status
+      var itemId = $(this).attr("data-id");
+      $.ajax({
+        type: "PUT",
+        url: "/RPOSS/owner_panel/modify_menu_item/" + itemId + "/" + status,
+        success: function(){},
+        error: function(){}
+      });
+    });
+
+  });
+</script>
+</body>
+</html>
