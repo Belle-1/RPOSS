@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template, jsonify, redirect, url_for
-from ..forms import ContactUsForm, CustomerDetailsForm
+from ..forms import ContactUsForm, CustomerDetailsForm, DeliveryCustomerDetailsForm
 from instance.config import send_mail
 from app import db_session
 from app.models import MenuItems, Delivery, RestaurantBaseInformation
@@ -30,19 +30,12 @@ def index():
 
 @Cmod.route("/menu", methods=['GET'])
 def menu():
-    # get delivery orders hampers
-    allow_delivery = query(model_column=Delivery.allow_delivery)
-    delivery_taxes = query(model_column=Delivery.delivery_tax)
-    delivery_charges = query(model_column=Delivery.delivery_charges)
-    min_amount = query(model_column=Delivery.min_amount)
-    max_amount = query(model_column=Delivery.max_amount)
-
     return render_template('menu.html',
-                           allow_delivery=allow_delivery,
-                           delivery_taxes=delivery_taxes,
-                           delivery_charges=delivery_charges,
-                           min_amount=min_amount,
-                           max_amount=max_amount
+                           allow_delivery=query(model_column=Delivery.allow_delivery),
+                           delivery_taxes=query(model_column=Delivery.delivery_tax),
+                           delivery_charges=query(model_column=Delivery.delivery_charges),
+                           min_amount=query(model_column=Delivery.min_amount),
+                           max_amount=query(model_column=Delivery.max_amount)
                            )
 
 
@@ -64,20 +57,47 @@ def get_menu_items():
 @Cmod.route("/few_steps", methods=['GET', 'POST'])
 def few_steps():
     customer_details_form = CustomerDetailsForm()
-    if request.method == 'POST' and customer_details_form.validate():
-        customer_name = customer_details_form.customer_name.data
-        customer_phone = customer_details_form.customer_phone.data
-        customer_email = customer_details_form.customer_email.data
-        order_method = customer_details_form.order_method.data
-        address_line1 = customer_details_form.address_line1.data
-        address_line2 = customer_details_form.address_line2.data
-        state = customer_details_form.state.data
-        zipcode = customer_details_form.zipcode.data
-        notes = customer_details_form.notes.data
-    elif request.method == 'POST':
+    delivery_customer_details_form = DeliveryCustomerDetailsForm()
+
+    if request.method == 'POST':
+        order = eval(request.cookies.get('order'))
+        for i in order: print(i)
+
+        if request.values.get('order-method') == 'Pick-up' and customer_details_form.validate():
+            customer_name = customer_details_form.customer_name.data
+            customer_phone = customer_details_form.customer_phone.data
+            customer_email = customer_details_form.customer_email.data
+            address_line1 = ''
+            address_line2 = ''
+            state = ''
+            zipcode = ''
+            notes = ''
+
+        elif request.values.get('order-method') == 'Delivery' and delivery_customer_details_form.validate():
+            customer_name = customer_details_form.customer_name.data
+            customer_phone = customer_details_form.customer_phone.data
+            customer_email = customer_details_form.customer_email.data
+            address_line1 = delivery_customer_details_form.address_line1.data
+            address_line2 = delivery_customer_details_form.address_line2.data
+            state = delivery_customer_details_form.state.data
+            zipcode = delivery_customer_details_form.zipcode.data
+            notes = delivery_customer_details_form.notes.data
+
         return render_template('few_steps.html',
-                               customer_details_form=customer_details_form)
-    return redirect(url_for('.menu'))
+                               customer_details_form=customer_details_form,
+                               delivery_customer_details_form=delivery_customer_details_form,
+                               allow_delivery=query(model_column=Delivery.allow_delivery),
+                               delivery_taxes=query(model_column=Delivery.delivery_tax),
+                               delivery_charges=query(model_column=Delivery.delivery_charges),
+                               min_amount=query(model_column=Delivery.min_amount),
+                               max_amount=query(model_column=Delivery.max_amount)
+                               )
+    return redirect(url_for('.menu',
+                            allow_delivery=query(model_column=Delivery.allow_delivery),
+                            delivery_taxes=query(model_column=Delivery.delivery_tax),
+                            delivery_charges=query(model_column=Delivery.delivery_charges),
+                            min_amount=query(model_column=Delivery.min_amount),
+                            max_amount=query(model_column=Delivery.max_amount)))
 
 
 @Cmod.route("/phone_validation", methods=['GET', 'POST'])

@@ -2,107 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7bfc57ee-f338-490d-8266-f6a3e9c192c2" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip-9.0.1.dist-info/DESCRIPTION.rst" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip-9.0.1.dist-info/INSTALLER" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip-9.0.1.dist-info/METADATA" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip-9.0.1.dist-info/RECORD" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip-9.0.1.dist-info/WHEEL" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip-9.0.1.dist-info/entry_points.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip-9.0.1.dist-info/metadata.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip-9.0.1.dist-info/top_level.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/big5freq.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/big5prober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/chardetect.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/chardistribution.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/charsetgroupprober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/charsetprober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/codingstatemachine.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/compat.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/constants.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/cp949prober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/escprober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/escsm.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/eucjpprober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/euckrfreq.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/euckrprober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/euctwfreq.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/euctwprober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/gb2312freq.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/gb2312prober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/hebrewprober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/jisfreq.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/jpcntx.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/langbulgarianmodel.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/langcyrillicmodel.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/langgreekmodel.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/langhebrewmodel.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/langhungarianmodel.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/langthaimodel.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/latin1prober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/mbcharsetprober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/mbcsgroupprober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/mbcssm.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/sbcharsetprober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/sbcsgroupprober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/sjisprober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/universaldetector.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/chardet/utf8prober.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/_collections.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/connection.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/connectionpool.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/contrib/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/contrib/appengine.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/contrib/ntlmpool.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/contrib/pyopenssl.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/contrib/socks.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/exceptions.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/fields.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/filepost.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/packages/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/packages/ordered_dict.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/packages/six.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/packages/ssl_match_hostname/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/packages/ssl_match_hostname/_implementation.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/poolmanager.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/request.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/response.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/util/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/util/connection.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/util/request.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/util/response.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/util/retry.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/util/ssl_.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/util/timeout.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/packages/urllib3/util/url.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scripts/pip.exe" afterPath="$PROJECT_DIR$/Scripts/pip.exe" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scripts/pip3.5.exe" afterPath="$PROJECT_DIR$/Scripts/pip3.5.exe" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scripts/pip3.exe" afterPath="$PROJECT_DIR$/Scripts/pip3.exe" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/New folder/New Text Document.txt" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/__init__.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/cachecontrol/compat.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/cachecontrol/compat.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/__init__.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/adapters.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/adapters.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/api.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/api.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/auth.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/auth.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/cacert.pem" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/cacert.pem" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/certs.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/certs.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/compat.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/compat.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/cookies.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/cookies.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/exceptions.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/exceptions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/models.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/sessions.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/sessions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/status_codes.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/status_codes.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/utils.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/_vendor/requests/utils.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/site-packages/pip/download.py" afterPath="$PROJECT_DIR$/Lib/site-packages/pip/download.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/customer_panel/static/js/menu.js" afterPath="$PROJECT_DIR$/app/customer_panel/static/js/menu.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/customer_panel/templates/few_steps.html" afterPath="$PROJECT_DIR$/app/customer_panel/templates/few_steps.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/customer_panel/templates/menu.html" afterPath="$PROJECT_DIR$/app/customer_panel/templates/menu.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/customer_panel/views.py" afterPath="$PROJECT_DIR$/app/customer_panel/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models.py" afterPath="$PROJECT_DIR$/app/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/utilities.py" afterPath="$PROJECT_DIR$/app/utilities.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/instance/config.py" afterPath="$PROJECT_DIR$/instance/config.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pip-selfcheck.json" afterPath="$PROJECT_DIR$/pip-selfcheck.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/forms.py" afterPath="$PROJECT_DIR$/app/forms.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -117,8 +23,8 @@
       <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/forms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1989">
-              <caret line="122" column="49" lean-forward="false" selection-start-line="122" selection-start-column="49" selection-end-line="122" selection-end-column="49" />
+            <state relative-caret-position="245">
+              <caret line="153" column="45" lean-forward="true" selection-start-line="153" selection-start-column="45" selection-end-line="153" selection-end-column="45" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -126,22 +32,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="21" column="29" lean-forward="false" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
-              <folding>
-                <element signature="e#0#62#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-362">
+            <state relative-caret-position="-1768">
               <caret line="178" column="46" lean-forward="false" selection-start-line="178" selection-start-column="46" selection-end-line="178" selection-end-column="46" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
@@ -165,28 +59,8 @@
       <file leaf-file-name="config.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/instance/config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-22">
+            <state relative-caret-position="17">
               <caret line="67" column="49" lean-forward="false" selection-start-line="67" selection-start-column="49" selection-end-line="67" selection-end-column="49" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pip-selfcheck.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pip-selfcheck.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index - Copy.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/customer_panel/templates/index - Copy.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-102">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -195,8 +69,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/customer_panel/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="40" lean-forward="false" selection-start-line="10" selection-start-column="40" selection-end-line="10" selection-end-column="40" />
+            <state relative-caret-position="135">
+              <caret line="62" column="50" lean-forward="false" selection-start-line="62" selection-start-column="50" selection-end-line="62" selection-end-column="50" />
               <folding>
                 <element signature="e#0#81#0" expanded="true" />
               </folding>
@@ -204,10 +78,20 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/owner_panel/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="279">
+              <caret line="249" column="20" lean-forward="true" selection-start-line="249" selection-start-column="20" selection-end-line="249" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="utilities.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/utilities.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
+            <state relative-caret-position="884">
               <caret line="52" column="62" lean-forward="false" selection-start-line="52" selection-start-column="62" selection-end-line="52" selection-end-column="62" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
@@ -227,6 +111,8 @@
       <find>os.</find>
       <find>employee_name</find>
       <find>add_employee</find>
+      <find>flas</find>
+      <find>order_method</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -244,15 +130,15 @@
         <option value="$PROJECT_DIR$/app/owner_panel/templates/owner_restaurant.html" />
         <option value="$PROJECT_DIR$/app/owner_panel/models.py" />
         <option value="$PROJECT_DIR$/run.py" />
-        <option value="$PROJECT_DIR$/app/forms.py" />
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/app/progressive_panel/views.py" />
         <option value="$PROJECT_DIR$/app/__init__.py" />
-        <option value="$PROJECT_DIR$/app/owner_panel/views.py" />
         <option value="$PROJECT_DIR$/app/views.py" />
         <option value="$PROJECT_DIR$/instance/config.py" />
         <option value="$PROJECT_DIR$/app/models.py" />
         <option value="$PROJECT_DIR$/app/utilities.py" />
+        <option value="$PROJECT_DIR$/app/owner_panel/views.py" />
+        <option value="$PROJECT_DIR$/app/forms.py" />
         <option value="$PROJECT_DIR$/app/customer_panel/views.py" />
       </list>
     </option>
@@ -378,8 +264,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -604,13 +490,13 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14746094" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2140625" sideWeight="0.17871094" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.178125" sideWeight="0.82128906" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.278125" sideWeight="0.82128906" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19375" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19375" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -681,7 +567,7 @@
         <state relative-caret-position="357">
           <caret line="21" column="53" lean-forward="true" selection-start-line="21" selection-start-column="53" selection-end-line="21" selection-end-column="53" />
           <folding>
-            <element signature="e#0#62#0" expanded="true" />
+            <element signature="e#0#62#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -907,26 +793,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="21" column="29" lean-forward="false" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#62#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1989">
-          <caret line="122" column="49" lean-forward="false" selection-start-line="122" selection-start-column="49" selection-end-line="122" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -944,62 +810,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/owner_panel/views.py">
+    <entry file="file://$PROJECT_DIR$/pre-test5.pyx" />
+    <entry file="file://$PROJECT_DIR$/pre-test5.c" />
+    <entry file="file://$PROJECT_DIR$/app/customer_panel/templates/index - Copy.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2278">
-          <caret line="101" column="19" lean-forward="false" selection-start-line="101" selection-start-column="19" selection-end-line="101" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/customer_panel/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="40" lean-forward="false" selection-start-line="10" selection-start-column="40" selection-end-line="10" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#81#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-362">
-          <caret line="178" column="46" lean-forward="false" selection-start-line="178" selection-start-column="46" selection-end-line="178" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/utilities.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="52" column="62" lean-forward="false" selection-start-line="52" selection-start-column="62" selection-end-line="52" selection-end-column="62" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/instance/config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-22">
-          <caret line="67" column="49" lean-forward="false" selection-start-line="67" selection-start-column="49" selection-end-line="67" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pre-test5.pyx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pre-test5.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
+        <state relative-caret-position="-663">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
@@ -1013,11 +828,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/customer_panel/templates/index - Copy.html">
+    <entry file="file://$PROJECT_DIR$/instance/config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-102">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="17">
+          <caret line="67" column="49" lean-forward="false" selection-start-line="67" selection-start-column="49" selection-end-line="67" selection-end-column="49" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="21" column="29" lean-forward="false" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#62#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/utilities.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="884">
+          <caret line="52" column="62" lean-forward="false" selection-start-line="52" selection-start-column="62" selection-end-line="52" selection-end-column="62" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="153" column="45" lean-forward="true" selection-start-line="153" selection-start-column="45" selection-end-line="153" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/customer_panel/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="62" column="50" lean-forward="false" selection-start-line="62" selection-start-column="50" selection-end-line="62" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#81#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/owner_panel/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="249" column="20" lean-forward="true" selection-start-line="249" selection-start-column="20" selection-end-line="249" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1768">
+          <caret line="178" column="46" lean-forward="false" selection-start-line="178" selection-start-column="46" selection-end-line="178" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

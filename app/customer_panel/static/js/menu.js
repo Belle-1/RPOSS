@@ -52,8 +52,9 @@ $(document.body).on('click', '.remove-btn', function(){  // addes to item qty by
 
 //
 function displayOrder(){ // displaying selected menu items and their billing info on checkout1 section.
-  var displayOrder = "";  //this is where all selected items will appear
-  console.log(order);
+  var displayOrder = "";  //this is where all selected items will appear in menu.html
+  var displayOrder2 = "";  //this is where all selected items will appear in few_steps.html
+  console.log('order: ', order);
   for (var i in order){
     var itemTotal = (order[i].item_price * order[i].item_qty)  // item_price * item_qty
     displayOrder += "<tr><th class='fit align-middle'><img src='" + order[i].item_image
@@ -65,9 +66,15 @@ function displayOrder(){ // displaying selected menu items and their billing inf
       + "</td><td class='align-middle fit'><button data-name='"+ order[i].item_name
       + "' class='btn-sm btn-outline-light btn-circle remove-btn'>-</button></td><td class='align-middle fit text-right'>$"
       + Number(itemTotal).toFixed(2) + "</td></tr>"
+    displayOrder2 += "<tr><th class='fit align-middle'><img src='" + order[i].item_image
+      + "'class='img-responsive img-circle' width='75' height='75'></th><td class='align-middle'><span class='text-uppercase'>" + order[i].item_name
+      + "</span><br>$" + order[i].item_price
+      + "</td><td class='align-middle text-center'> " + order[i].item_qty
+      + " </td><td class='align-middle fit text-right'>$" + Number(itemTotal).toFixed(2) + "</td></tr>"
   };
 
   $("#display-order").html(displayOrder);
+  $("#display-order2").html(displayOrder2);
   $("#my-order").html(" " + countOrder() + " ITEMS" + " ($" + totalAmount() + ")"); // shows items total qty + total amount
   $("#sub-deli-tax").html("$ " + subTotal() + "<br>" + "$ " + delivery_charges + "<br>" + "% " + delivery_taxes);  // shows bill info
   $("#total").html("$ " + totalAmount()); // shows total amount
@@ -175,6 +182,21 @@ function loadOrder(){  // returns order array from localStorage formated in JSON
 
 function removeOrder(){  // removes order from localStorage, this function is called once the order is submited to the server
   localStorage.removeItem("order");
+};
+
+function createCookie(name, value, days) {  // creating a cookie of order array
+    var expires;
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    } else {
+        expires = "";
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+};
+
+function deleteCookie(name) {  // deletes the order cookie made previously
+    document.cookie = name + '=;expires=thu, 01 Jan 1970 00:00:01 GMT;';
 };
 
 loadOrder();

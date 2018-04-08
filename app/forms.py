@@ -149,17 +149,17 @@ class CustomerDetailsForm(FlaskForm):
                                  validators=[DataRequired()])
     customer_email = StringField('E-mail',
                                  validators=[DataRequired(), Email()])
-    order_method = RadioField(choices=[('Pick-up', 'Pick-up'), ('Delivery', 'Delivery')],
-                              default='Pick-up',)
+
+
+class DeliveryCustomerDetailsForm(FlaskForm):
     address_line1 = StringField('Address line1',
                                 validators=[DataRequired()])
-    address_line2 = StringField('Address line2',
-                                validators=[DataRequired()])
+    address_line2 = StringField('Address line2')
     state = StringField('State/provinces/region',
                         validators=[DataRequired()])
     zipcode = StringField('ZIP/postal code',
                           validators=[DataRequired()])
-    notes = TextAreaField('Special instruction', validators=[DataRequired()])
+    notes = TextAreaField('Special instruction')
     place_order = SubmitField('Place order')
 
 
