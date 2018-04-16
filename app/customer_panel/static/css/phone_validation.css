@@ -3,8 +3,22 @@ body {
   text-align: center;
 }
 
-body div {
-  padding-top: 100px;
+body div.container, div#cancelOrderModal {
+  padding-top: 10%;
+}
+
+.modal-dialog {
+  margin-top: 18%;
+}
+
+@media screen and (max-width:1024px){
+  .modal-dialog {
+    margin-top: 35%;
+  }
+}
+
+.modal-dialog .modal-body {
+  margin-top: 0.5px;
 }
 
 .invalid-code, .cancel-order {

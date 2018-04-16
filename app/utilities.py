@@ -1,18 +1,46 @@
-from app import db_session
+from app import db_session, app
 from app.models import RestaurantBaseInformation, OpeningHours, SocialMedia, \
     MenuSetUp, PickUp, Delivery, OrdersTiming
+import pyotp, random
+from twilio.rest import Client
+from flask import session
+
+
+# Twilio setup
+# sends confirmation code to customer phone
+def send_confirmation_code(to_number):
+    verification_code = generate_code()
+    send_sms(to_number, verification_code)
+    session['verification_code'] = verification_code
+    return verification_code
+
+
+# for generating verification code
+def generate_code():
+    return str(random.randrange(100000, 999999))
+
+
+# for sending SMS
+def send_sms(to_number, body):
+    account_sid = app.config['TWILIO_ACCOUNT_SID']
+    auth_token = app.config['TWILIO_AUTH_TOKEN']
+    twilio_number = app.config['TWILIO_NUMBER']
+    client = Client(account_sid, auth_token)
+    client.api.messages.create("+" + to_number,
+                               from_=twilio_number,
+                               body=body)
 
 
 def query(model_column,  model_filter=None, filter_by=None):
-	"""
+    """
     model_column: model.column column you want to query
-	model_filter: model.filter coulumn you want to filter, defaults to None
-	filter_by: value you want to filter by, defaults to None
-	"""
-	if model_filter:
-		return db_session.query(model_column).filter(model_filter == filter_by).one()[0]
-	else:
-		return db_session.query(model_column).one()[0]
+    model_filter: model.filter coulumn you want to filter, defaults to None
+    filter_by: value you want to filter by, defaults to None
+    """
+    if model_filter:
+        return db_session.query(model_column).filter(model_filter == filter_by).one()[0]
+    else:
+        return db_session.query(model_column).one()[0]
 
 
 restaurant_options = {

@@ -1,7 +1,7 @@
 from app import bcrypt
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, ForeignKey, Integer, String, Float, Enum, DateTime, CHAR, Boolean, Time
+from sqlalchemy import Column, ForeignKey, Integer, String, Float, Enum, DateTime, Boolean, Time
 from sqlalchemy.orm import relationship
 from app import db_session
 
@@ -220,7 +220,7 @@ class Customers(Base):
 
     customer_id = Column(Integer(), primary_key=True, autoincrement=True)
     customer_name = Column(String(64))
-    customer_phone = Column(Integer())
+    customer_phone = Column(String())
     customer_email = Column(String(150))
     customer_verified = Column(Boolean())
     order = relationship('Orders')
@@ -244,9 +244,10 @@ class Orders(Base):
     order_id = Column(Integer(), primary_key=True, autoincrement=True)
     customer_id = Column(Integer(), ForeignKey('customers.customer_id'))
     items = relationship('OrderItems')
-    order_method = Column(Enum('pick_up', 'delivery'))
+    order_method = Column(Enum('pick-up', 'delivery'))
     datetime_made = Column(DateTime())
-    address_line = Column(String(150))
+    address_line1 = Column(String(150))
+    address_line2 = Column(String(150))
     state = Column(String(64))
     zipcode = Column(Integer())
     notes = Column(String(150))
@@ -277,7 +278,6 @@ class OrderItems(Base):
     id = Column(Integer(), primary_key=True, autoincrement=True)
     order_id = Column(Integer(), ForeignKey('orders.order_id'))
     item_name = Column(String(64))
-    item_category = Column(String(64))
     item_quantity = Column(Integer())
     item_size = Column(Enum('s', 'm', 'l'))
     item_price = Column(Integer())

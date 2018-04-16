@@ -1,4 +1,14 @@
 # import random 
+# from twilio.rest import Client
+# from flask import session
+
+
+# # sends confirmation code to customer phone
+# def send_confirmation_code(to_number):
+#     verification_code = generate_code()
+#     send_sms(to_number, verification_code)
+#     session['verification_code'] = verification_code
+#     return verification_code
 
 
 # # for generating verification code
