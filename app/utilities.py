@@ -31,6 +31,12 @@ def send_sms(to_number, body):
                                body=body)
 
 
+# check phone number is valid number
+def is_number_valid(phone_number):
+    client = Client(app.config['TWILIO_ACCOUNT_SID'], app.config['TWILIO_AUTH_TOKEN'])
+    return client.lookups.phone_numbers(phone_number).fetch()
+
+
 def query(model_column,  model_filter=None, filter_by=None):
     """
     model_column: model.column column you want to query
@@ -66,6 +72,7 @@ opening_hours_options = {
 	'thursday': query(model_column=OpeningHours.thursday),
 	'friday': query(model_column=OpeningHours.friday),
 	}
+print(opening_hours_options['from_date'], opening_hours_options['to_date'], opening_hours_options['saturday'])
 social_media_options = {
 	'facebook': query(model_column=SocialMedia.site_link, model_filter=SocialMedia.site_name, filter_by='facebook'),
 	'twitter': query(model_column=SocialMedia.site_link, model_filter=SocialMedia.site_name, filter_by='twitter'),

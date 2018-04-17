@@ -3,8 +3,9 @@ from ..forms import ContactUsForm, CustomerDetailsForm, DeliveryCustomerDetailsF
 from instance.config import send_mail
 from app import db_session
 from app.models import MenuItems, Delivery, RestaurantBaseInformation, Orders, OrderItems, Customers
-from app.utilities import query, send_confirmation_code
+from app.utilities import query, send_confirmation_code, is_number_valid
 from sqlalchemy import exc
+from twilio.base.exceptions import TwilioException
 import datetime
 
 
@@ -60,10 +61,16 @@ def get_menu_items():
 def few_steps():
     customer_details_form = CustomerDetailsForm()
     delivery_customer_details_form = DeliveryCustomerDetailsForm()
-
+    # if current day and time within the opening hours and days range that the owner specified then proceed
+    # if not, customer can pick menu items but, can not place an order
+    # a flash must indicate:
+    # (you can place order within the restaurant opening hours\days dau1, day2, day3,... from 00:00 to 00:00)
+    # just reroute to the same page (few_steps) with the aforementioned flash
     if request.method == 'POST':
         order_method = request.values.get('order-method')
         verified = False
+
+
 
         if order_method == 'Pick-up' and customer_details_form.validate():
             order_array = eval(request.cookies.get('order'))
@@ -78,6 +85,8 @@ def few_steps():
             notes = ''
 
             try:
+                is_number_valid(customer_phone)
+
                 customer = Customers(customer_name=customer_name,
                                      customer_phone=customer_phone,
                                      customer_email=customer_email,
@@ -103,20 +112,29 @@ def few_steps():
                                       item_price=item['item_price'])
                     db_session.add(item)
                     db_session.commit()
-                return render_template('phone_validation.html', customer_phone=session['customer_phone'])
+
             except exc.SQLAlchemyError as e:
-                flash('there was an error submitting your order, please try again later', 'error')
-                print('e', e)
-                db_session.rollback()
-                return render_template('few_steps.html',
-                                       customer_details_form=customer_details_form,
-                                       delivery_customer_details_form=delivery_customer_details_form,
-                                       allow_delivery=query(model_column=Delivery.allow_delivery),
-                                       delivery_taxes=query(model_column=Delivery.delivery_tax),
-                                       delivery_charges=query(model_column=Delivery.delivery_charges),
-                                       min_amount=query(model_column=Delivery.min_amount),
-                                       max_amount=query(model_column=Delivery.max_amount)
-                                       )
+                print('exc.SQLAlchemyError: ', e)
+                flash('there was an error submitting your order, please try again later', 'danger')
+            except TwilioException as e:
+                print('TwilioException: ', e)
+                flash('there was an error submitting your order, please include country key with your phone number and try again', 'danger')
+            except:
+                print('an error occurred :)')
+            else:
+                print('return success')
+                return redirect(url_for('.phone_validation'))
+            print('return failure')
+            db_session.rollback()
+            return render_template('few_steps.html',
+                                   customer_details_form=customer_details_form,
+                                   delivery_customer_details_form=delivery_customer_details_form,
+                                   allow_delivery=query(model_column=Delivery.allow_delivery),
+                                   delivery_taxes=query(model_column=Delivery.delivery_tax),
+                                   delivery_charges=query(model_column=Delivery.delivery_charges),
+                                   min_amount=query(model_column=Delivery.min_amount),
+                                   max_amount=query(model_column=Delivery.max_amount)
+                                   )
         elif order_method == 'Delivery' and delivery_customer_details_form.validate():
             order_array = eval(request.cookies.get('order'))
 
@@ -131,6 +149,8 @@ def few_steps():
             notes = delivery_customer_details_form.notes.data
 
             try:
+                is_number_valid(customer_phone)
+
                 customer = Customers(customer_name=customer_name,
                                      customer_phone=customer_phone,
                                      customer_email=customer_email,
@@ -160,20 +180,30 @@ def few_steps():
                                       item_price=item['item_price'])
                     db_session.add(item)
                     db_session.commit()
-                return render_template('phone_validation.html', customer_phone=session['customer_phone'])
+
             except exc.SQLAlchemyError as e:
-                flash('there was an error submitting your order, please try again later', 'error')
-                print('e', e)
-                db_session.rollback()
-                return render_template('few_steps.html',
-                                       customer_details_form=customer_details_form,
-                                       delivery_customer_details_form=delivery_customer_details_form,
-                                       allow_delivery=query(model_column=Delivery.allow_delivery),
-                                       delivery_taxes=query(model_column=Delivery.delivery_tax),
-                                       delivery_charges=query(model_column=Delivery.delivery_charges),
-                                       min_amount=query(model_column=Delivery.min_amount),
-                                       max_amount=query(model_column=Delivery.max_amount)
-                                       )
+                print('exc.SQLAlchemyError: ', e)
+                flash('there was an error submitting your order, please try again later', 'danger')
+            except TwilioException as e:
+                print('TwilioException: ', e)
+                flash('there was an error submitting your order, please include country key with your phone number and try again',
+                      'danger')
+            except:
+                print('an error occurred :)')
+            else:
+                print('return success')
+                return redirect(url_for('.phone_validation'))
+            print('return failure')
+            db_session.rollback()
+            return render_template('few_steps.html',
+                                   customer_details_form=customer_details_form,
+                                   delivery_customer_details_form=delivery_customer_details_form,
+                                   allow_delivery=query(model_column=Delivery.allow_delivery),
+                                   delivery_taxes=query(model_column=Delivery.delivery_tax),
+                                   delivery_charges=query(model_column=Delivery.delivery_charges),
+                                   min_amount=query(model_column=Delivery.min_amount),
+                                   max_amount=query(model_column=Delivery.max_amount)
+                                   )
         return render_template('few_steps.html',
                                customer_details_form=customer_details_form,
                                delivery_customer_details_form=delivery_customer_details_form,
@@ -193,19 +223,22 @@ def few_steps():
 
 @Cmod.route("/phone_validation", methods=['GET', 'POST'])
 def phone_validation():
+    print('inside phone validation function')
     print('request.method: ', request.method, 'session.get("customer_phone"): ',
-          session.get('customer_phone'), 'request.form["verification_code"]: ',
-          request.form['verification_code'], 'customer id: ,', session.get('customer_id'))
+          session.get('customer_phone'), 'customer id: ,', session.get('customer_id'))
     if request.method == 'POST' and session.get('customer_phone'):
         if request.form['verification_code'] == session.get('verification_code'):
             session['verified'] = True
-            return render_template('order_received.html')
+            return redirect(url_for('.order_received'))
         elif session.get('verification_code') is None:
             send_confirmation_code(session['customer_phone'])
             return render_template('phone_validation.html', customer_phone=session['customer_phone'])
         else:
             flash('Wrong code. Please try again.', 'danger')
             return render_template('phone_validation.html', customer_phone=session['customer_phone'])
+    elif request.method == 'GET' and session.get('customer_phone'):
+        send_confirmation_code(session['customer_phone'])
+        return render_template('phone_validation.html', customer_phone=session['customer_phone'])
     elif session.get('customer_phone') is None:
         return redirect(url_for('.menu',
                                 allow_delivery=query(model_column=Delivery.allow_delivery),
@@ -218,6 +251,25 @@ def phone_validation():
 @Cmod.route("/order_received", methods=['GET'])
 def order_received():
     if session.get('verified'):
-        pass
+        customer_info = db_session.query(Customers).filter(Customers.customer_id == session['customer_id']).one()
+        customer_order_info = db_session.query(Orders).filter(Orders.customer_id == session['customer_id']).one()
+        customer_order_items = db_session.query(OrderItems).filter(OrderItems.order_id == customer_order_info.order_id).all()
+        delivery_taxes = query(model_column=Delivery.delivery_tax)
+        delivery_charges = query(model_column=Delivery.delivery_charges)
+        total = 0
+        for item in customer_order_items:
+            total += (float(item.item_price) * item.item_quantity)
+        if customer_order_info.order_method == 'delivery':
+            a = float(total) + delivery_charges
+            b = a * (float(delivery_taxes) / 100)
+            total = a + b
+        return render_template('order_received.html',
+                               customer_info=customer_info,
+                               customer_order_info=customer_order_info,
+                               customer_order_items=customer_order_items,
+                               total=total,
+                               delivery_taxes=delivery_taxes,
+                               delivery_charges=delivery_charges
+                               )
     else:
         return redirect(url_for('/'))

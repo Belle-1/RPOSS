@@ -36,10 +36,10 @@
               <!-- DELIVERY METHOD  -->
             <h4 class="mt-2">Order Method</h4>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="order-method" value="Pick-up" checked>Pick-up
+              <input class="form-check-input" type="radio" name="order-method" value="Pick-up" id="Pick-up" checked>Pick-up
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="order-method" value="Delivery">Delivery
+              <input class="form-check-input" type="radio" name="order-method" value="Delivery" id="Delivery">Delivery
             </div>
             <input type="submit" value="Place order" class="btn btn-secondary btn-block text-uppercase mt-5">
             </div>
@@ -102,6 +102,7 @@
     $('#zipcode').closest('input').removeAttr('required');
 
     $('.form-group .form-check').on('click', 'input', function(){
+	  displayOrder();
       var optionChecked = $(this).attr('value');
       if (optionChecked == 'Pick-up') {
         deliveryAditionalFields.css('display', 'none');

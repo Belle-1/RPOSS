@@ -14,7 +14,7 @@
 <body class="bg-light">
   <div class="container mt-5">
     <h1 class="text-uppercase">thanks, we received your order</h1>
-    <h5 class="text-muted">You'll receive a confirmation email at username@domain.com once the restaurant confirms your order.</h5>
+    <h5 class="text-muted">You'll receive a confirmation email at {{ customer_info.customer_email }} once the restaurant confirms your order.</h5>
     <!-- Customer Order -->
     <h3 class="text-uppercase mt-5">your order:</h3>
     <div class="container">
@@ -22,21 +22,13 @@
         <div class="col-5">
           <table class="table table-sm table-borderless">
             <tbody>
-              <tr>
-                <td class="fit">2x</td>
-                <td class="text-uppercase">item name <span class="font-weight-light text-muted"> ($00.00)</span></td>
-                <td class="">$00.00</td>
+			{% for item in customer_order_items %}
+			  <tr>
+                <td class="fit">{{ item.item_quantity }}x</td>
+                <td class="text-uppercase">{{ item.item_name }} <span class="font-weight-light text-muted"> (${{ item.item_price }})</span></td>
+                <td class="">${{ item.item_price * item.item_quantity }}</td>
               </tr>
-              <tr>
-                <td class="fit">2x</td>
-                <td class="text-uppercase">item name <span class="font-weight-light text-muted"> ($00.00)</span></td>
-                <td class="">$00.00</td>
-              </tr>
-              <tr>
-                <td class="fit">2x</td>
-                <td class="text-uppercase">item name <span class="font-weight-light text-muted"> ($00.00)</span></td>
-                <td class="">$00.00</td>
-              </tr>
+			{% endfor %}
             </tbody>
           </table>
         </div>
@@ -46,11 +38,16 @@
             <tbody>
               <tr>
                 <td class="align-middle font-weight-bold">
-                  Order ID<br><span class="text-muted font-weight-light">#222815</span><br>
-                  Delivery Charges<br><span class="text-muted font-weight-light">$00.00</span><br>
-                  Tax<br><span class="text-muted font-weight-light">5%</span>
+                  Order ID<br><span class="text-muted font-weight-light">#{{ customer_order_info.order_id }}</span><br>
+				  {% if customer_order_info.order_method == 'pick-up' %}
+				    Delivery Charges<br><span class="text-muted font-weight-light">$00.00</span><br>
+                    Tax<br><span class="text-muted font-weight-light">0%</span>
+				  {% else %}
+				    Delivery Charges<br><span class="text-muted font-weight-light">${{ delivery_charges }}</span><br>
+                    Tax<br><span class="text-muted font-weight-light">{{ delivery_taxes }}%</span>
+				  {% endif %}
                 </td>
-                <td class="text-uppercase font-weight-bold text-left align-bottom">total<br><span class="text-muted">$00.00</span></td>
+                <td class="text-uppercase font-weight-bold text-left align-bottom">total<br><span class="text-muted">${{ total }}</span></td>
               </tr>
             </tbody>
           </table>
@@ -59,14 +56,16 @@
     </div><!-- /.Customer Order -->
     <!-- Customer Details -->
     <h3 class="text-uppercase mt-5">your details:</h3>
-    <div class="container font-weight-light">
-      Name: <span class="font-weight-bold">...</span><br>
-      Phone number: <span class="font-weight-bold">...</span><br>
-      E-mail: <span class="font-weight-bold">...</span><br>
-      On <span class="font-weight-bold">...</span> at <span class="font-weight-bold">...</span><br>
-      At <span class="font-weight-bold">...</span><br>
+    <div class="container font-weight-light mb-5">
+      Name: <span class="font-weight-bold">{{ customer_info.customer_name }}</span><br>
+      Phone number: <span class="font-weight-bold">{{ customer_info.customer_phone }}</span><br>
+      E-mail: <span class="font-weight-bold">{{ customer_info.customer_email }}</span><br>
+      On <span class="font-weight-bold">{{ customer_order_info.datetime_made.date().strftime('%a, %B %d') }}</span> at <span class="font-weight-bold">{{ customer_order_info.datetime_made.time().strftime('%H:%M') }}</span><br>
+	  {% if customer_order_info.order_method == 'delivery' %}
+	    At <span class="font-weight-bold">{{ customer_order_info.address_line1 }}, {{ customer_order_info.address_line2 }}, {{ customer_order_info.state }}, {{ customer_order_info.zipcode }}</span><br>
+	  {% endif %}
     </div><!-- /.Customer Details -->
-    <a href="{{ url_for('customer.index') }}" class="mt-5 mb-5">Go to home page</a>
+    <a href="{{ url_for('customer.index') }}" class="mt-5">Go to home page</a>
   </div>
 
 <!-- Bootstrap JavaScript -->

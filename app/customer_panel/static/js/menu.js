@@ -76,10 +76,18 @@ function displayOrder(){ // displaying selected menu items and their billing inf
   $("#display-order").html(displayOrder);
   $("#display-order2").html(displayOrder2);
   $("#my-order").html(" " + countOrder() + " ITEMS" + " ($" + totalAmount() + ")"); // shows items total qty + total amount
-  $("#sub-deli-tax").html("$ " + subTotal() + "<br>" + "$ " + delivery_charges + "<br>" + "% " + delivery_taxes);  // shows bill info
+  displayBill()
   $("#total").html("$ " + totalAmount()); // shows total amount
 
   next();
+};
+
+function displayBill(){
+  if (document.getElementById("Pick-up") == null || document.getElementById("Pick-up").checked){
+  	return $("#sub-deli-tax").html("$ " + subTotal() + "<br>" + "$ 00.00<br>" + "% " + 0);  // shows bill info
+  } else if (document.getElementById("Delivery").checked){ 
+	return $("#sub-deli-tax").html("$ " + subTotal() + "<br>" + "$ " + delivery_charges + "<br>" + "% " + delivery_taxes);  // shows bill info
+  }
 };
 
 var order = [];  // for storing order's items
@@ -161,10 +169,18 @@ function subTotal(){  // returns order's total cost $
 };
 
 function totalAmount(){  // returns the sum of totalCoset, delivery_charges and delivery_taxes
-  var totalBeforTax = (subTotal() + delivery_charges);
-  var taxes = totalBeforTax * (delivery_taxes / 100);
-  var totalAfterTax = totalBeforTax + taxes ;
-  return Number(totalAfterTax).toFixed(2)
+	console.log('totalAmount() triggered')
+  if (document.getElementById("Pick-up") == null || document.getElementById("Pick-up").checked){
+  	console.log('triggered from pick-up.checked')
+  	return subTotal()
+  } else if (document.getElementById("Delivery").checked){ 
+  	console.log('triggered from delivery.checked')
+	var totalBeforTax = (subTotal() + delivery_charges);
+    var taxes = totalBeforTax * (delivery_taxes / 100);
+    var totalAfterTax = totalBeforTax + taxes ;
+    console.log('totalAfterTax: ', Number(totalAfterTax).toFixed(2))
+    return Number(totalAfterTax).toFixed(2)
+  }
 };
 
 function saveOrder(){  // saves order array on clicent side
