@@ -2,7 +2,7 @@ from flask import Blueprint, request, render_template, jsonify, redirect, url_fo
 from ..forms import ContactUsForm, CustomerDetailsForm, DeliveryCustomerDetailsForm
 from instance.config import send_mail
 from app import db_session
-from app.models import MenuItems, Delivery, RestaurantBaseInformation, Orders, OrderItems, Customers
+from app.models import MenuItems, Delivery, OpeningHours, Orders, OrderItems, Customers, OrdersTiming
 from app.utilities import query, send_confirmation_code, is_number_valid
 from sqlalchemy import exc
 from twilio.base.exceptions import TwilioException
@@ -24,8 +24,12 @@ def index():
         customer_phone = contact_us_form.customer_phone.data
         customer_email = contact_us_form.customer_email.data
         customer_message = contact_us_form.customer_message.data
-
-        send_mail(customer_name, customer_message, customer_email, customer_phone)
+        try:
+            is_number_valid(customer_phone)
+            send_mail(customer_name, customer_message, customer_email, customer_phone)
+            flash('Message sent successfully.', 'success')
+        except:
+            flash('There was an error sending your message. Please, try again later.', 'danger')
 
     return render_template('index.html',
                            contact_us_form=contact_us_form)
@@ -66,11 +70,25 @@ def few_steps():
     # a flash must indicate:
     # (you can place order within the restaurant opening hours\days dau1, day2, day3,... from 00:00 to 00:00)
     # just reroute to the same page (few_steps) with the aforementioned flash
-    if request.method == 'POST':
+    from_date = query(model_column=OpeningHours.from_date)
+    to_date = query(model_column=OpeningHours.to_date)
+    days = {
+        'saturday':  query(model_column=OpeningHours.saturday),
+        'sunday':  query(model_column=OpeningHours.sunday),
+        'monday':  query(model_column=OpeningHours.monday),
+        'tuesday':  query(model_column=OpeningHours.tuesday),
+        'wednesday':  query(model_column=OpeningHours.wednesday),
+        'thursday':  query(model_column=OpeningHours.thursday),
+        'friday':  query(model_column=OpeningHours.friday),
+    }
+    working_days = [day for day, value in days.items() if value]
+
+    # checks if the customer's POST request is within restaurant's opening days/hours
+    within_working_day = ((from_date < datetime.datetime.now().time() < to_date) and datetime.datetime.now().strftime('%A').lower() in working_days)
+    print('within working days: ', within_working_day)
+    if request.method == 'POST' and within_working_day:
         order_method = request.values.get('order-method')
         verified = False
-
-
 
         if order_method == 'Pick-up' and customer_details_form.validate():
             order_array = eval(request.cookies.get('order'))
@@ -213,6 +231,20 @@ def few_steps():
                                min_amount=query(model_column=Delivery.min_amount),
                                max_amount=query(model_column=Delivery.max_amount)
                                )
+    elif request.method == 'POST' and within_working_day is False:
+        flash('You can place orders within working hours/days: {}, From {} To {}.'.format(', '.join(working_days).title(),
+                                                                                          from_date.strftime('%H:%M %p'),
+                                                                                          to_date.strftime('%H:%M %p')),
+              'warning')
+        return render_template('few_steps.html',
+                               customer_details_form=customer_details_form,
+                               delivery_customer_details_form=delivery_customer_details_form,
+                               allow_delivery=query(model_column=Delivery.allow_delivery),
+                               delivery_taxes=query(model_column=Delivery.delivery_tax),
+                               delivery_charges=query(model_column=Delivery.delivery_charges),
+                               min_amount=query(model_column=Delivery.min_amount),
+                               max_amount=query(model_column=Delivery.max_amount)
+                               )
     return redirect(url_for('.menu',
                             allow_delivery=query(model_column=Delivery.allow_delivery),
                             delivery_taxes=query(model_column=Delivery.delivery_tax),
@@ -223,22 +255,28 @@ def few_steps():
 
 @Cmod.route("/phone_validation", methods=['GET', 'POST'])
 def phone_validation():
-    print('inside phone validation function')
-    print('request.method: ', request.method, 'session.get("customer_phone"): ',
-          session.get('customer_phone'), 'customer id: ,', session.get('customer_id'))
     if request.method == 'POST' and session.get('customer_phone'):
         if request.form['verification_code'] == session.get('verification_code'):
             session['verified'] = True
-            return redirect(url_for('.order_received'))
+            try:
+                customer = db_session.query(Customers).filter(Customers.customer_id == session['customer_id']).one()
+                customer.customer_verified = True
+                db_session.commit()
+                return redirect(url_for('.order_received'))
+            except:
+                flash('There was an error verifying your account. Please, try again later.', 'danger')
+                return render_template('phone_validation.html')
         elif session.get('verification_code') is None:
             send_confirmation_code(session['customer_phone'])
-            return render_template('phone_validation.html', customer_phone=session['customer_phone'])
+            return render_template('phone_validation.html')
         else:
             flash('Wrong code. Please try again.', 'danger')
-            return render_template('phone_validation.html', customer_phone=session['customer_phone'])
+            return render_template('phone_validation.html')
+
     elif request.method == 'GET' and session.get('customer_phone'):
         send_confirmation_code(session['customer_phone'])
-        return render_template('phone_validation.html', customer_phone=session['customer_phone'])
+        return render_template('phone_validation.html')
+
     elif session.get('customer_phone') is None:
         return redirect(url_for('.menu',
                                 allow_delivery=query(model_column=Delivery.allow_delivery),
@@ -263,13 +301,22 @@ def order_received():
             a = float(total) + delivery_charges
             b = a * (float(delivery_taxes) / 100)
             total = a + b
+
+        session.pop('customer_id', None)
+        session.pop('customer_phone', None)
+        session.pop('verification_code', None)
+        session.pop('verified', None)
+
         return render_template('order_received.html',
                                customer_info=customer_info,
                                customer_order_info=customer_order_info,
                                customer_order_items=customer_order_items,
                                total=total,
                                delivery_taxes=delivery_taxes,
-                               delivery_charges=delivery_charges
+                               delivery_charges=delivery_charges,
+                               pending_time=query(model_column=OrdersTiming.pending_time),
+                               delivery_time=datetime.timedelta(minutes=query(model_column=OrdersTiming.delivery_time)),
+                               preparing_time=datetime.timedelta(minutes=query(model_column=OrdersTiming.preparing_time)),
                                )
     else:
-        return redirect(url_for('/'))
+        return redirect(url_for('.index'))

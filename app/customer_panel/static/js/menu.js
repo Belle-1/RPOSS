@@ -171,10 +171,8 @@ function subTotal(){  // returns order's total cost $
 function totalAmount(){  // returns the sum of totalCoset, delivery_charges and delivery_taxes
 	console.log('totalAmount() triggered')
   if (document.getElementById("Pick-up") == null || document.getElementById("Pick-up").checked){
-  	console.log('triggered from pick-up.checked')
   	return subTotal()
   } else if (document.getElementById("Delivery").checked){ 
-  	console.log('triggered from delivery.checked')
 	var totalBeforTax = (subTotal() + delivery_charges);
     var taxes = totalBeforTax * (delivery_taxes / 100);
     var totalAfterTax = totalBeforTax + taxes ;

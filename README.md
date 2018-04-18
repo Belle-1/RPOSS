@@ -378,7 +378,7 @@ In this section, RPOSS features and functions will be listed and described for b
 | ID | FR17 |
 | --- | :--- |
 | TITLE | All orders view |
-| DESC | This section will show all orders the system has/had in a table view. This table contains: Order ID, Confirmed/rejected by, Customer's name, Custoemr's phone number, Time made, Order method(delivery/pick-up), Status(pending, in progress,deliverd, rejected), Time delivered/rejected. |
+| DESC | This section will show all orders the system has/had in a table view. This table contains: Order ID, Confirmed/rejected by, Customer's name, Custoemr's phone number, Time made, Order method(delivery/pick-up), Status(pending, in progress,deliverd, rejected), Time confirmed/rejected. |
 | RAT | In order to view all orders. |
 | DEP | FR18, FR19, FR20, FR21 |
 
@@ -413,7 +413,7 @@ In this section, RPOSS features and functions will be listed and described for b
 | ID | FR20 |
 | --- | :--- |
 | TITLE | Finished orders view |
-| DESC | This view will show all finished orders in a table view, This table contain: order ID, confirmed by, customer's name, custoemr's phone number, time made, order method(delivery/pick-up), status(deliverd), time delivered. |
+| DESC | This view will show all finished orders in a table view, This table contain: order ID, confirmed by, customer's name, custoemr's phone number, time made, order method(delivery/pick-up), status(deliverd), time confirmed. |
 | RAT | In order to view all finished orders. |
 | DEP | FR19 |
 

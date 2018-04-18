@@ -14,7 +14,7 @@
 <body class="bg-light">
   <div class="container mt-5">
     <h1 class="text-uppercase">thanks, we received your order</h1>
-    <h5 class="text-muted">You'll receive a confirmation email at {{ customer_info.customer_email }} once the restaurant confirms your order.</h5>
+    <h5 class="text-muted">Within {{ pending_time }} minutes you'll receive a confirmation email at {{ customer_info.customer_email }} once the restaurant confirms your order.</h5>
     <!-- Customer Order -->
     <h3 class="text-uppercase mt-5">your order:</h3>
     <div class="container">
@@ -60,9 +60,11 @@
       Name: <span class="font-weight-bold">{{ customer_info.customer_name }}</span><br>
       Phone number: <span class="font-weight-bold">{{ customer_info.customer_phone }}</span><br>
       E-mail: <span class="font-weight-bold">{{ customer_info.customer_email }}</span><br>
-      On <span class="font-weight-bold">{{ customer_order_info.datetime_made.date().strftime('%a, %B %d') }}</span> at <span class="font-weight-bold">{{ customer_order_info.datetime_made.time().strftime('%H:%M') }}</span><br>
 	  {% if customer_order_info.order_method == 'delivery' %}
+		On <span class="font-weight-bold">{{ customer_order_info.datetime_made.date().strftime('%a, %B %d') }}</span> at <span class="font-weight-bold">{{ (delivery_time + customer_order_info.datetime_made).time().strftime('%H:%M') }}</span><br>
 	    At <span class="font-weight-bold">{{ customer_order_info.address_line1 }}, {{ customer_order_info.address_line2 }}, {{ customer_order_info.state }}, {{ customer_order_info.zipcode }}</span><br>
+	  {% else %}
+	    On <span class="font-weight-bold">{{ customer_order_info.datetime_made.date().strftime('%a, %B %d') }}</span> at <span class="font-weight-bold">{{ (preparing_time + customer_order_info.datetime_made).time().strftime('%H:%M') }}</span><br>
 	  {% endif %}
     </div><!-- /.Customer Details -->
     <a href="{{ url_for('customer.index') }}" class="mt-5">Go to home page</a>
@@ -72,5 +74,11 @@
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="{{ url_for('customer.static', filename='js/lib/jquery-3.3.1.min.js') }}"></script>
 <script src="{{ url_for('customer.static', filename='js/lib/bootstrap.min.js') }}"></script>
+<!-- custome javascript for this template -->
+<script type="text/javascript" src="{{ url_for('customer.static', filename='js/menu.js') }}"></script>
+<script>
+  deleteCookie();
+  clearOrder();
+</script>
 </body>
 </html>

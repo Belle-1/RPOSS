@@ -253,6 +253,7 @@ class Orders(Base):
     notes = Column(String(150))
     status = Column(Enum('pending', 'in_progress', 'missed', 'rejected', 'finished'))
     by = Column(String(64))
+    datetime_confirmed = Column(DateTime())
 
     @property
     def serialize(self):

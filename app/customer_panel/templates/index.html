@@ -88,6 +88,14 @@
   </div><!-- END Location Section -->
 <!-- Contact us Section -->
   <div id="contact" class="contact-section mt-5">
+  <!-- flashes -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} text-left mb-4">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %} <!-- End of flashes -->
     <h3 class="scroll text-uppercase text-center">contact us</h3>
     <hr class="scroll line text-center ">
     <div class="form-container">

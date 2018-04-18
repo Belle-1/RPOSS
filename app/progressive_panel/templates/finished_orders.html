@@ -31,17 +31,17 @@
     <div class="row">
       <div class="col-sm-2 mt-3">
         <div class="list-group">
-          <a href="#" class="list-group-item list-group-item-action">All Orders</a>
-          <a href="#" class="list-group-item list-group-item-action">Pending Orders <span class="badge badge-warning badge-pill">14</span></a>
-          <a href="#" class="list-group-item list-group-item-action">In Progress Orders <span class="badge badge-success badge-pill">14</span></a>
-          <a href="#" class="list-group-item list-group-item-action active">Finished Orders</a>
-          <a href="#" class="list-group-item list-group-item-action">Missed Orders</a>
+          <a href="{{ url_for('staff.all_orders') }}" class="list-group-item list-group-item-action">All Orders</a>
+          <a href="{{ url_for('staff.pending_orders') }}" class="list-group-item list-group-item-action">Pending Orders</a>
+          <a href="{{ url_for('staff.in_progress_orders') }}" class="list-group-item list-group-item-action">In Progress Orders</a>
+          <a href="{{ url_for('staff.finished_orders') }}" class="list-group-item list-group-item-action active">Finished Orders</a>
+          <a href="{{ url_for('staff.missed_orders') }}" class="list-group-item list-group-item-action">Missed Orders</a>
         </div>
       </div>
       <div class="col-sm-10 mt-3">
         <!-- Hello Section -->
         <div class="hello-section">
-          <h3 class="font-weight-light">Hello, EmployeeName.</h3>
+          <h3 class="font-weight-light">Hello, {{ session['employee_username'] }}.</h3>
         </div><!-- /.Hello Section -->
         <!-- Finished Orders Table -->
         <div class="table-responsive">

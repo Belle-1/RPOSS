@@ -32,8 +32,8 @@ def login():
             else:
                 session['employee_logged_in'] = True
                 session['employee_username'] = user.employee_username
-                return render_template('all_orders.html',
-                                       employee_username=session['employee_username'])
+                return render_template('all_orders.html')
     return render_template('log_in.html',
                            form=form)
 
+# log out function

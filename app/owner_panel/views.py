@@ -47,9 +47,19 @@ def restaurant():
             data = {
                 'from_date': opening_form.from_hour.data,
                 'to_date': opening_form.to_hour.data,
+                'saturday': 0,
+                'sunday': 0,
+                'monday': 0,
+                'tuesday': 0,
+                'wednesday': 0,
+                'thursday': 0,
+                'friday': 0,
             }
-            for day in opening_form.opening_days.data:
-                data[day] = 1
+
+            for key, value in data.items():
+                for day in opening_form.opening_days.data:
+                    if key == day:
+                        data[day] = 1
 
             updatedata(data, OpeningHours)
 
