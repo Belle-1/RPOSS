@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, session
+from flask import Blueprint, request, render_template, session, redirect, url_for
 from app.forms import LogInForm, RestaurantBaseForm, RestaurantSocialMediaForm, RestaurantOpeningHoursForm
 from app.models import Employee
 from app import db_session
@@ -32,7 +32,7 @@ def login():
             else:
                 session['employee_logged_in'] = True
                 session['employee_username'] = user.employee_username
-                return render_template('all_orders.html')
+                return redirect(url_for('staff.all_orders'))
     return render_template('log_in.html',
                            form=form)
 

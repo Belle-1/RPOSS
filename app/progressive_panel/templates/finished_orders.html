@@ -46,6 +46,7 @@
         <!-- Finished Orders Table -->
         <div class="table-responsive">
 	        <table class="table table-striped table-responsive-sm table-hover mt-3">
+
 	          <thead>
 	            <tr>
 	              <th scope="col align-middle">Order ID</th>
@@ -57,52 +58,20 @@
 	              <th scope="col align-middle">Time delivered</th>
 	            </tr>
 	          </thead>
-	          <tbody>
-	            <tr>
-	              <th scope="row">#2221131</th>
-	              <td>EmployeeName</td>
-	              <td class="text-capitalize capsule capsule-delivered">delivered</td>
-	              <td>CustomrName<br>(000)-000000000</td>
-	              <td>Feb 22, 2018<br>11:38 p.m.</td>
-	              <td class="text-capitalize capsule capsule-pick-up">pick-up</td>
-	              <td>Feb 22, 2018<br>11:39 p.m.</td>
-	            </tr>
-	            <tr>
-	              <th scope="row">#2221131</th>
-	              <td>EmployeeName</td>
-	              <td class="text-capitalize capsule capsule-delivered">delivered</td>
-	              <td>CustomrName<br>(000)-000000000</td>
-	              <td>Feb 22, 2018<br>11:38 p.m.</td>
-	              <td class="text-capitalize capsule capsule-pick-up">pick-up</td>
-	              <td>Feb 22, 2018<br>11:39 p.m.</td>
-	            </tr>
-	            <tr>
-	              <th scope="row">#2221131</th>
-	              <td>EmployeeName</td>
-	              <td class="text-capitalize capsule capsule-delivered">delivered</td>
-	              <td>CustomrName<br>(000)-000000000</td>
-	              <td>Feb 22, 2018<br>11:38 p.m.</td>
-	              <td class="text-capitalize capsule capsule-delivery">delivery</td>
-	              <td>Feb 22, 2018<br>11:39 p.m.</td>
-	            </tr>
-	            <tr>
-	              <th scope="row">#2221131</th>
-	              <td>EmployeeName</td>
-	              <td class="text-capitalize capsule capsule-delivered">delivered</td>
-	              <td>CustomrName<br>(000)-000000000</td>
-	              <td>Feb 22, 2018<br>11:38 p.m.</td>
-	              <td class="text-capitalize capsule capsule-pick-up">pick-up</td>
-	              <td>Feb 22, 2018<br>11:39 p.m.</td>
-	            </tr>
-	            <tr>
-	              <th scope="row">#2221131</th>
-	              <td>EmployeeName</td>
-	              <td class="text-capitalize capsule capsule-delivered">delivered</td>
-	              <td>CustomrName<br>(000)-000000000</td>
-	              <td>Feb 22, 2018<br>11:38 p.m.</td>
-	              <td class="text-capitalize capsule capsule-pick-up">pick-up</td>
-	              <td>Feb 22, 2018<br>11:39 p.m.</td>
-	            </tr>
+            <tbody id="orders">
+              {% raw %}
+                <template id="order-template">
+                  <tr>
+    	              <th scope="row">#{{order_id}}</th>
+    	              <td>{{by}}</td>
+    	              <td class="text-capitalize capsule capsule-{{status}}">{{status}}</td>
+    	              <td class="text-capitalize">{{customer_name}}<br>{{customer_phone}}</td>
+    	              <td>{{date_made}}<br>{{time_made}}</td>
+    	              <td class="text-capitalize capsule capsule-{{order_method}}">{{order_method}}</td>
+    	              <td>{{date_confirmed}}<br>{{time_confirmed}}</td>
+    	            </tr>
+                </template>
+              {% endraw %}
 	          </tbody>
 	        </table><!-- /.Finished Orders Table -->
 	    </div>
@@ -117,5 +86,39 @@
 <script src="{{ url_for("staff.static", filename="js/lib/bootstrap.min.js") }}"></script>
 <!-- Scroll Reveal Library -->
 <script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+<!-- Mustache Logic-less template -->
+<script src="https://raw.githack.com/janl/mustache.js/master/mustache.min.js"></script>
+<!-- Custom Javascript for This Template  -->
+<script src="{{ url_for("staff.static", filename="js/#") }}"></script>
+<script>
+  $(function(){
+    var orders = $('#orders');
+    var orderTemplate = $("#order-template").html();
+
+    function addOrder(order){
+      orders.append(Mustache.render(orderTemplate, order[1]));
+    };
+
+    // requesting all validated orders from server every 5 minutes
+    var ajax_call = function() {
+      $.ajax({
+        type: 'GET',
+        url: '/RPOSS/progressive_panel/get_orders/finished_orders',
+        success: function(orders){
+          $.each(orders, function(i, order){
+            addOrder(order);
+          });
+        },
+        error: function(){
+          alert("Error loading orders.");
+        }
+      });
+    };
+    ajax_call();
+    var interval = 1000 * 60 * 2;
+    setInterval(ajax_call, interval);
+
+  });
+</script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, jsonify
 from sqlalchemy import exc, and_, or_
 from app import db_session
 from app.models import Orders, Customers, OrdersTiming, OrderItems, Delivery
@@ -13,7 +13,7 @@ Smod = Blueprint('staff', __name__,
 
 @Smod.route("/all_orders", methods=['GET'])
 def all_orders():
-    return "all orders shall show here"
+    return render_template('all_orders.html')
 
 
 @Smod.route("/pending_orders", methods=['GET'])
@@ -36,6 +36,11 @@ def missed_orders():
     return render_template('missed_orders.html')
 
 
+@Smod.route('/get_orders/<page>', methods=['GET'])
+def get_orders(page):
+    return jsonify(fetch_orders(page))
+
+
 def fetch_orders(page):
     customers = db_session.query(Customers).all()
     orders = db_session.query(Orders).all()
@@ -50,9 +55,12 @@ def fetch_orders(page):
                                         'order_id': order.order_id,
                                         'by': order.by,
                                         'status': order.status,
-                                        'datetime_made': order.datetime_made,
+                                        'date_made':  order.datetime_made.strftime('%b %d, %Y') if order.datetime_made else '',
+                                        'time_made': order.datetime_made.strftime('%H:%M %p') if order.datetime_made else '',
                                         'order_method': order.order_method,
-                                        'datetime_confirmed': order.datetime_confirmed}
+                                        'date_confirmed': order.datetime_confirmed.strftime('%b %d, %Y') if order.datetime_confirmed else '',
+                                        'time_confirmed': order.datetime_confirmed.strftime('%H:%M %p') if order.datetime_confirmed else '',
+                                        }
     elif page == 'pending_orders':
         for customer in customers:
             order = db_session.query(Orders).filter(and_(Orders.customer_id == customer.customer_id,
@@ -64,7 +72,8 @@ def fetch_orders(page):
                                         'order_id': order.order_id,
                                         'status': 'pending',
                                         'pending_remaining_time': query(model_column=OrdersTiming.pending_time),
-                                        'datetime_made': order.datetime_made,
+                                        'date_made':  order.datetime_made.strftime('%b %d, %Y') if order.datetime_made else '',
+                                        'time_made': order.datetime_made.strftime('%H:%M %p') if order.datetime_made else '',
                                         'order_method': order.order_method,
                                         'address_line1': order.address_line1,
                                         'address_line2': order.address_line2,
@@ -73,9 +82,9 @@ def fetch_orders(page):
                                         'notes': order.notes,
                                         'delivery_charges': query(model_column=Delivery.delivery_charges),
                                         'delivery_taxes': query(model_column=Delivery.delivery_tax),
-                                        'items': db_session.query(OrderItems).filter(OrderItems.order_id == order.order_id).all()}
-                # items[0].id, items[0].order_id, ... this is how to access the items in html :)
-        print(data)
+                                        'items': [item.serialize for item in db_session.query(OrderItems).filter(OrderItems.order_id == order.order_id).all()],
+                                        'total': sum(float(item.item_price) * item.item_quantity for item in db_session.query(OrderItems).filter(OrderItems.order_id == order.order_id).all())}
+
     elif page == 'in_progress_orders':
         for customer in customers:
             order = db_session.query(Orders).filter(and_(Orders.customer_id == customer.customer_id),
@@ -83,11 +92,11 @@ def fetch_orders(page):
             if order:
                 data[order.order_id] = {'order_id': order.order_id,
                                         'pending_remaining_time': query(model_column=OrdersTiming.pending_time),
-                                        'datetime_made': order.datetime_made,
+                                        'date_made':  order.datetime_made.strftime('%b %d, %Y') if order.datetime_made else '',
+                                        'time_made': order.datetime_made.strftime('%H:%M %p') if order.datetime_made else '',
                                         'notes': order.notes,
                                         'items': db_session.query(OrderItems).filter(OrderItems.order_id == order.order_id).all()}
-                # items[i].quantity, items[i].item_name this is how to access the items in html :)
-        print(data)
+
     elif page == 'finished_orders':
         for customer in customers:
             order = db_session.query(Orders).filter(and_(Orders.customer_id == customer.customer_id,
@@ -98,10 +107,11 @@ def fetch_orders(page):
                                         'order_id': order.order_id,
                                         'by': order.by,
                                         'status': 'delivered',
-                                        'datetime_made': order.datetime_made,
+                                        'date_made':  order.datetime_made.strftime('%b %d, %Y') if order.datetime_made else '',
+                                        'time_made': order.datetime_made.strftime('%H:%M %p') if order.datetime_made else '',
                                         'order_method': order.order_method,
-                                        'datetime_confirmed': order.datetime_confirmed}
-        print(data)
+                                        'date_confirmed': order.datetime_confirmed.strftime('%b %d, %Y') if order.datetime_confirmed else '',
+                                        'time_confirmed': order.datetime_confirmed.strftime('%H:%M %p') if order.datetime_confirmed else ''}
     elif page == 'missed_orders':
         for customer in customers:
             order = db_session.query(Orders).filter(and_(Orders.customer_id == customer.customer_id,
@@ -113,12 +123,13 @@ def fetch_orders(page):
                                         'order_id': order.order_id,
                                         'by': order.by,
                                         'status': order.status,
-                                        'datetime_made': order.datetime_made,
+                                        'date_made':  order.datetime_made.strftime('%b %d, %Y') if order.datetime_made else '',
+                                        'time_made': order.datetime_made.strftime('%H:%M %p') if order.datetime_made else '',
                                         'order_method': order.order_method,
-                                        'datetime_rejected': order.datetime_confirmed}
-        print(data)
-
-    return data
+                                        'date_confirmed': order.datetime_confirmed.strftime('%b %d, %Y') if order.datetime_confirmed else '',
+                                        'time_confirmed': order.datetime_confirmed.strftime('%H:%M %p') if order.datetime_confirmed else ''}
+    import operator
+    return sorted(data.items(), key=operator.itemgetter(0), reverse=True)
 
 print(fetch_orders('in_progress_orders'))
 

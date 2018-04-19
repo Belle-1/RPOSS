@@ -289,10 +289,9 @@ class OrderItems(Base):
         return {
             'id': self.id,
             'order_id': self.order_id,
-            'item_name ': self.item_name ,
-            'item_category': self.item_category,
+            'item_name': self.item_name,
             'item_quantity': self.item_quantity,
-            'item_size ': self.item_size ,
+            'item_size': self.item_size,
             'item_price': self.item_price,
         }
 
