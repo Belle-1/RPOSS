@@ -40,12 +40,15 @@
       </div>
       <div class="col-sm-10 mt-3">
         <!-- Hello Section -->
-        <div class="hello-section">
-          <h3 class="font-weight-light">Hello, {{ session['employee_username'] }}.</h3>
+        <div class="hello-section row">
+          <div class="col-6"><h3 class="font-weight-light">Hello, {{ session['employee_username'] }}.</h3></div>
+          <div class="col-6"><button onClick="window.location.reload()" type="button" class="btn btn-primary float-right">Refresh</button></div>
+          <!-- <h3 class="font-weight-light">Hello, {{ session['employee_username'] }}.</h3>
+          <button onClick="window.location.reload()" type="button" class="btn btn-primary">Refresh</button> -->
         </div><!-- /.Hello Section -->
 
         <!-- Pending Orders -->
-        <div class="orders">
+        <div id="orders">
           {% raw %}
           <template id="order-template">
             <div class="order-width pending-order">
@@ -58,7 +61,7 @@
 
               <div class="mt-2 order-footer w-100 text-capitalize">
                 <span class="float-left font-weight-bold">{{status}}</span>
-                <span class="float-right font-weight-bold text-danger">-{{pending_remaining_time}}</span>
+                <span class="float-right font-weight-bold text-danger {{order_id}}-remaining-time"></span>
                 <hr class="line">
                 <!-- Additional Information -->
                 <div class="additional-info">
@@ -137,82 +140,96 @@
 <!-- Mustache Logic-less template -->
 <script src="https://raw.githack.com/janl/mustache.js/master/mustache.min.js"></script>
 <script>
-  $( document ).ready(function() {
-    //All pending orders' additional information must be toggled at first
-    $(".additional-info").slideToggle(0);
+  $(function(){
+
+    // requesting all validated orders from server every 5 minutes
+    var orders = $('#orders');
+    var orderTemplate = $("#order-template").html();
+    function addOrder(order){
+      orders.append(Mustache.render(orderTemplate, order[1]));
+    };
+
+    function addItem(order_id, item){
+      var items = $('#' + order_id + '-order')
+      items.append("<tr><td class='fit'>"
+      + item.item_quantity + " x</td><td class='text-uppercase'>"
+      + item.item_name + "<span class='font-weight-light text-muted'><br>($"
+      + item.item_price + ")</span></td><td>$"
+      + item.item_price * item.item_quantity + "</td></tr>");
+    };
+
+    var ajax_call = function() {
+      $.ajax({
+        type: 'GET',
+        url: '/RPOSS/progressive_panel/get_orders/pending_orders',
+        success: function(orders){
+          $.each(orders, function(i, order){
+            addOrder(order);
+            $.each(order[1].items, function(i, item){
+              addItem(order[0], item);
+            });
+            var display = '.' + order[1].order_id + '-remaining-time';
+            startTimer(order[1].pending_remaining_time, display);
+            // Each order must be toggled inside when it's first generated
+            $(display).siblings(".additional-info").slideToggle(0);
+          });
+        },
+        error: function(){alert("Error loading orders.");}
+      });
+    };
+    ajax_call();
+
+    function startTimer(duration, display) {
+      console.log('inside if (true)');
+      duration_in_minutes = duration * 60;
+      var timer = duration_in_minutes, minutes, seconds;
+      setInterval(function () {
+          minutes = parseInt(timer / 60, 10);
+          seconds = parseInt(timer % 60, 10);
+
+          minutes = minutes < 10 ? "0" + minutes : minutes;
+          seconds = seconds < 10 ? "0" + seconds : seconds;
+          $(display).text(minutes + ":" + seconds);
+
+          if (--timer < 0) {
+              timer = duration;
+              // display.remove();
+          }
+      }, 1000);
+    };
+
+    // For placing orders in optimal position
+    var $grid = orders.masonry({
+      itemSelector: '.pending-order',
+      columnWidth: '.order-width',
+      stagger: 15,
+      initLayout: false,
+    });
+    $grid.masonry("reloadItems");
+    $grid.masonry();
+
+    // Each pending order's additional information will show on click based on $this value!
+    orders.on("click", ".pending-order", function () {
+      // div .additional-info
+      var additionalInfo = $(this)["0"].children[3].childNodes[9]
+      //
+      var btnConfirm = $(this)["0"].children[3].children[3].children[7].childNodes[1]
+      //
+      var btnDecline = $(this)["0"].children[3].children[3].children[7].childNodes[3]
+      // Toggle order's additional information.
+      $(additionalInfo).slideToggle(0);
+      // init layout
+      $grid.masonry("reloadItems");
+      $grid.masonry();
+    });
 
     // Rejecting a pending order
-    $(".myBtn").on('click', function(){
+    orders.on('click', ".myBtn", function(){
       var orderId = $(this).data('order-id');
-      console.log(orderId);
       var rejectionModal = $("#myModal");
       // the following is for the python implementaion phase for tracking the value of the pressed order.
       rejectionModal.modal();
-      });
-
-      // requesting all validated orders from server every 5 minutes
-      var orders = $('#orders');
-      var orderTemplate = $("#order-template").html();
-      function addOrder(order){
-        orders.append(Mustache.render(orderTemplate, order[1]));
-      };
-
-      function addItem(order_id, item){
-        var items = $('#' + order_id + '-order')
-        items.append("<tr><td class='fit'>"
-        + item.item_quantity + " x</td><td class='text-uppercase'>"
-        + item.item_name + "<span class='font-weight-light text-muted'><br>($"
-        + item.item_price + ")</span></td><td>$"
-        + item.item_price * item.item_quantity + "</td></tr>");
-      };
-
-      var ajax_call = function() {
-        $.ajax({
-          type: 'GET',
-          url: '/RPOSS/progressive_panel/get_orders/pending_orders',
-          success: function(orders){
-            $.each(orders, function(i, order){
-              addOrder(order);
-              console.log('order: ', order);
-              $.each(order[1].items, function(i, item){
-                addItem(order[0], item);
-                console.log('item: ', item);
-              });
-            });
-          },
-          error: function(){
-            alert("Error loading orders.");
-          }
-        });
-      };
-      ajax_call();
-      var interval = 1000 * 60 * 2;
-      setInterval(ajax_call, interval);
-
-      // For placing orders in optimal position
-      var $grid = $('.orders').masonry({
-        itemSelector: '.pending-order',
-        columnWidth: '.order-width',
-        stagger: 15,
-        initLayout: false,
-      });
-      $grid.masonry("reloadItems");
-      $grid.masonry();
-
-      // Each pending order's additional information will show on click based on $this value!
-      $(".pending-order").on("click", function () {
-        // div .additional-info
-        var additionalInfo = $(this)["0"].children[3].childNodes[9]
-        //
-        var btnConfirm = $(this)["0"].children[3].children[3].children[7].childNodes[1]
-        //
-        var btnDecline = $(this)["0"].children[3].children[3].children[7].childNodes[3]
-        // Toggle order's additional information.
-        $(additionalInfo).slideToggle(0);
-        // init layout
-        $grid.masonry("reloadItems");
-        $grid.masonry();
-      });
+    });
   });
 </script>
 <!-- Masonry Cascading grid layout library -->

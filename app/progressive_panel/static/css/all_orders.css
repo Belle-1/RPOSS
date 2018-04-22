@@ -59,14 +59,14 @@
   border: 1px solid #FFE8B1;
 }
 
-.capsule-in-progress {
+.capsule-in_progress {
   color: #fff;
   background-color: #a0d468;
   border-radius: .5rem;
   border: 1px solid #D3EBBA;
 }
 
-.capsule-delivered {
+.capsule-finished {
   color: #fff;
   background-color: #3BAFDA;
   border-radius: .5rem;

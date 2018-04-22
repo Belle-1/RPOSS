@@ -95,7 +95,7 @@ def fetch_orders(page):
                                         'date_made':  order.datetime_made.strftime('%b %d, %Y') if order.datetime_made else '',
                                         'time_made': order.datetime_made.strftime('%H:%M %p') if order.datetime_made else '',
                                         'notes': order.notes,
-                                        'items': db_session.query(OrderItems).filter(OrderItems.order_id == order.order_id).all()}
+                                        'items': [item.serialize for item in db_session.query(OrderItems).filter(OrderItems.order_id == order.order_id).all()]}
 
     elif page == 'finished_orders':
         for customer in customers:
