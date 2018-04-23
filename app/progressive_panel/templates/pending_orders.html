@@ -168,8 +168,9 @@
             $.each(order[1].items, function(i, item){
               addItem(order[0], item);
             });
+
             var display = '.' + order[1].order_id + '-remaining-time';
-            startTimer(order[1].pending_remaining_time, display);
+            startTimer(order[1].date_made + ' ' + order[1].time_made, order[1].pending_remaining_time, display);
             // Each order must be toggled inside when it's first generated
             $(display).siblings(".additional-info").slideToggle(0);
           });
@@ -179,17 +180,27 @@
     };
     ajax_call();
 
-    function startTimer(duration, display) {
-      console.log('inside if (true)');
-      duration_in_minutes = duration * 60;
-      var timer = duration_in_minutes, minutes, seconds;
-      setInterval(function () {
-          minutes = parseInt(timer / 60, 10);
-          seconds = parseInt(timer % 60, 10);
+    function startTimer(datetime_made, remaining_time, display) {
+      var dateTimeMade = new Date(datetime_made);
+      var orderExpirationDate =  dateTimeMade.setMinutes(dateTimeMade.getMinutes() + remaining_time);
+      var currentDateTime = new Date()
 
-          minutes = minutes < 10 ? "0" + minutes : minutes;
-          seconds = seconds < 10 ? "0" + seconds : seconds;
-          $(display).text(minutes + ":" + seconds);
+      if (orderExpirationDate - currentDateTime < 1) {
+        // stop timer
+        // remove order
+        // consider order_status == missed
+      }
+      // The following line of code shall replace all the code in the setInterval.... up to if(--timer < 0){....
+      $(display).text(orderExpirationDate.getMinutes().toString() + ":" + orderExpirationDate.getSeconds().toString());
+
+      // var timer = duration_in_minutes, minutes, seconds;
+      setInterval(function () {
+          // minutes = parseInt(timer / 60, 10);
+          // seconds = parseInt(timer % 60, 10);
+          //
+          // minutes = minutes < 10 ? "0" + minutes : minutes;
+          // seconds = seconds < 10 ? "0" + seconds : seconds;
+          // $(display).text(minutes + ":" + seconds);
 
           if (--timer < 0) {
               timer = duration;
