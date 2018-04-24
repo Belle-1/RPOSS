@@ -51,7 +51,7 @@
         <div id="orders">
           {% raw %}
           <template id="order-template">
-            <div class="order-width pending-order">
+            <div class="order-width pending-order {{order_id}}">
               <img src="http://127.0.0.1:5000/RPOSS/owner_panel/static/img/{{order_method}}.png" class="float-left order-method mt-1">
               <div class="float-left ml-3">
                 <h5>#{{order_id}}</h5>
@@ -81,7 +81,7 @@
                   <hr>
                   <!-- Special Instruction -->
                   <p class="text-center">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    {{notes}}
                   </p><!-- /.Special Instruction -->
                   <hr class="line">
                   <!-- Billing Info -->
@@ -89,10 +89,10 @@
                     <tbody>
                       <tr>
                         <td class="align-middle font-weight-bold">
-                          Delivery Charges<br><span class="text-muted font-weight-light">$00.00</span><br>
-                          Tax<br><span class="text-muted font-weight-light">5%</span>
+                          Delivery Charges<br><span class="text-muted font-weight-light">${{delivery_charges}}</span><br>
+                          Tax<br><span class="text-muted font-weight-light">{{delivery_taxes}}%</span>
                         </td>
-                        <td class="text-uppercase font-weight-bold text-left align-bottom">total<br><span class="text-muted">$00.00</span></td>
+                        <td class="text-uppercase font-weight-bold text-left align-bottom">total<br><span class="text-muted">${{total}}</span></td>
                       </tr>
                     </tbody>
                   </table><!-- /.Billing Info -->
@@ -171,8 +171,7 @@
 
             var display = '.' + order[1].order_id + '-remaining-time';
             startTimer(order[1].date_made + ' ' + order[1].time_made, order[1].pending_remaining_time, display);
-            // Each order must be toggled inside when it's first generated
-            $(display).siblings(".additional-info").slideToggle(0);
+            $(display).siblings(".additional-info").slideToggle(0);  // Each order must be toggled inside when it's first generated
           });
         },
         error: function(){alert("Error loading orders.");}
@@ -180,34 +179,41 @@
     };
     ajax_call();
 
-    function startTimer(datetime_made, remaining_time, display) {
-      var dateTimeMade = new Date(datetime_made);
-      var orderExpirationDate =  dateTimeMade.setMinutes(dateTimeMade.getMinutes() + remaining_time);
-      var currentDateTime = new Date()
+    let countDown;
 
-      if (orderExpirationDate - currentDateTime < 1) {
-        // stop timer
-        // remove order
-        // consider order_status == missed
-      }
-      // The following line of code shall replace all the code in the setInterval.... up to if(--timer < 0){....
-      $(display).text(orderExpirationDate.getMinutes().toString() + ":" + orderExpirationDate.getSeconds().toString());
+    function startTimer(datetime_made, pending_remaining_time, display){
+      const madeOn = new Date(datetime_made.slice(0, -2));
+      const then = new Date(madeOn.getTime() + pending_remaining_time*60000);
 
-      // var timer = duration_in_minutes, minutes, seconds;
-      setInterval(function () {
-          // minutes = parseInt(timer / 60, 10);
-          // seconds = parseInt(timer % 60, 10);
-          //
-          // minutes = minutes < 10 ? "0" + minutes : minutes;
-          // seconds = seconds < 10 ? "0" + seconds : seconds;
-          // $(display).text(minutes + ":" + seconds);
+      countDown = setInterval(() => {
+        const timeLeft = new Date(then - Date.now());
+        $(display).text('-' + timeLeft.getMinutes().toString() + ":" + timeLeft.getSeconds().toString()) ;  // Display order's countdown timer
 
-          if (--timer < 0) {
-              timer = duration;
-              // display.remove();
-          }
-      }, 1000);
+        if (timeLeft <= 0 && $(display).length != 0) {
+          $.ajax({
+            type: 'PUT',
+            url: '/RPOSS/progressive_panel/modify_order/' + display.slice(1, -15) + '/' + 'missed',
+            success: function(){
+              $(display.slice(0, -15)).remove();
+              clearInterval(countDown);
+            },
+            error: function(){console("an error occured");}
+          });
+
+        }
+      }, 1000)
     };
+
+      // $.ajax({
+      //   type: 'PUT',
+      //   url: '/RPOSS/progressive_panel/modify_order/' + order_id + '/' + status,
+      //   success: function(){
+      //     on_success
+      //   },
+      //   error: function(){
+      //     on_error
+      //   }
+      // });
 
     // For placing orders in optimal position
     var $grid = orders.masonry({

@@ -41,6 +41,13 @@ def get_orders(page):
     return jsonify(fetch_orders(page))
 
 
+@Smod.route('/modify_order/<order_id>/<status>', methods=['PUT'])
+def modify_menu_item(order_id, status):
+    db_session.query(Orders).filter(Orders.order_id == int(order_id)).update({"status": status})
+    db_session.commit()
+    return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
+
+
 def fetch_orders(page):
     customers = db_session.query(Customers).all()
     orders = db_session.query(Orders).all()
@@ -130,8 +137,6 @@ def fetch_orders(page):
                                         'time_confirmed': order.datetime_confirmed.strftime('%H:%M %p') if order.datetime_confirmed else ''}
     import operator
     return sorted(data.items(), key=operator.itemgetter(0), reverse=True)
-
-print(fetch_orders('in_progress_orders'))
 
 
 
