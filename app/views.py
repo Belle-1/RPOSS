@@ -36,4 +36,13 @@ def login():
     return render_template('log_in.html',
                            form=form)
 
-# log out function
+
+@Rmod.route('/logout', methods=['GET', 'POST'])
+def logout():
+    form = LogInForm()
+    if session.get('owner_logged_in') or session.get('employee_logged_in'):
+        session.pop('owner_username', None)
+        session.pop('employee_username', None)
+        session.pop('owner_logged_in', None)
+        session.pop('employee_logged_in', None)
+    return render_template('log_in.html', form=form)

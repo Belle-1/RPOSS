@@ -2,7 +2,8 @@ from flask import Blueprint, request, render_template, jsonify, redirect, url_fo
 from ..forms import ContactUsForm, CustomerDetailsForm, DeliveryCustomerDetailsForm
 from instance.config import send_mail
 from app import db_session
-from app.models import MenuItems, Delivery, OpeningHours, Orders, OrderItems, Customers, OrdersTiming
+from app.models import MenuItems, Delivery, OpeningHours, Orders, OrderItems, Customers, OrdersTiming, SocialMedia,\
+    RestaurantBaseInformation, MenuSetUp
 from app.utilities import query, send_confirmation_code, is_number_valid
 from sqlalchemy import exc
 from twilio.base.exceptions import TwilioException
@@ -30,9 +31,32 @@ def index():
             flash('Message sent successfully.', 'success')
         except:
             flash('There was an error sending your message. Please, try again later.', 'danger')
-
+    days = {
+        'saturday':  query(model_column=OpeningHours.saturday),
+        'sunday':  query(model_column=OpeningHours.sunday),
+        'monday':  query(model_column=OpeningHours.monday),
+        'tuesday':  query(model_column=OpeningHours.tuesday),
+        'wednesday':  query(model_column=OpeningHours.wednesday),
+        'thursday':  query(model_column=OpeningHours.thursday),
+        'friday':  query(model_column=OpeningHours.friday),
+    }
+    working_days = [day for day, value in days.items() if value]
     return render_template('index.html',
-                           contact_us_form=contact_us_form)
+                           contact_us_form=contact_us_form,
+                           social_media=db_session.query(SocialMedia).all(),
+                           restaurant_name=query(model_column=RestaurantBaseInformation.restaurant_name),
+                           restaurant_about=query(model_column=RestaurantBaseInformation.restaurant_about),
+                           restaurant_menu_description=query(model_column=MenuSetUp.restaurant_description),
+                           restaurant_address_line=query(model_column=RestaurantBaseInformation.restaurant_address_line),
+                           restaurant_city=query(model_column=RestaurantBaseInformation.restaurant_city),
+                           restaurant_country=query(model_column=RestaurantBaseInformation.restaurant_country),
+                           restaurant_zipcode=query(model_column=RestaurantBaseInformation.restaurant_zipcode),
+                           restaurant_email=query(model_column=RestaurantBaseInformation.restaurant_email),
+                           restaurant_phone_number=query(model_column=RestaurantBaseInformation.restaurant_phone_number),
+                           working_days=', '.join(working_days).title(),
+                           from_date=query(model_column=OpeningHours.from_date).strftime('%H:%M %p'),
+                           to_date=query(model_column=OpeningHours.to_date).strftime('%H:%M %p'),
+                           )
 
 
 @Cmod.route("/menu", methods=['GET'])
@@ -65,11 +89,6 @@ def get_menu_items():
 def few_steps():
     customer_details_form = CustomerDetailsForm()
     delivery_customer_details_form = DeliveryCustomerDetailsForm()
-    # if current day and time within the opening hours and days range that the owner specified then proceed
-    # if not, customer can pick menu items but, can not place an order
-    # a flash must indicate:
-    # (you can place order within the restaurant opening hours\days dau1, day2, day3,... from 00:00 to 00:00)
-    # just reroute to the same page (few_steps) with the aforementioned flash
     from_date = query(model_column=OpeningHours.from_date)
     to_date = query(model_column=OpeningHours.to_date)
     days = {
@@ -85,7 +104,6 @@ def few_steps():
 
     # checks if the customer's POST request is within restaurant's opening days/hours
     within_working_day = ((from_date < datetime.datetime.now().time() < to_date) and datetime.datetime.now().strftime('%A').lower() in working_days)
-    print('within working days: ', within_working_day)
     if request.method == 'POST' and within_working_day:
         order_method = request.values.get('order-method')
         verified = False
@@ -132,17 +150,13 @@ def few_steps():
                     db_session.commit()
 
             except exc.SQLAlchemyError as e:
-                print('exc.SQLAlchemyError: ', e)
                 flash('there was an error submitting your order, please try again later', 'danger')
             except TwilioException as e:
-                print('TwilioException: ', e)
                 flash('there was an error submitting your order, please include country key with your phone number and try again', 'danger')
             except:
                 print('an error occurred :)')
             else:
-                print('return success')
                 return redirect(url_for('.phone_validation'))
-            print('return failure')
             db_session.rollback()
             return render_template('few_steps.html',
                                    customer_details_form=customer_details_form,
@@ -200,18 +214,14 @@ def few_steps():
                     db_session.commit()
 
             except exc.SQLAlchemyError as e:
-                print('exc.SQLAlchemyError: ', e)
                 flash('there was an error submitting your order, please try again later', 'danger')
             except TwilioException as e:
-                print('TwilioException: ', e)
                 flash('there was an error submitting your order, please include country key with your phone number and try again',
                       'danger')
             except:
                 print('an error occurred :)')
             else:
-                print('return success')
                 return redirect(url_for('.phone_validation'))
-            print('return failure')
             db_session.rollback()
             return render_template('few_steps.html',
                                    customer_details_form=customer_details_form,
@@ -256,6 +266,7 @@ def few_steps():
 @Cmod.route("/phone_validation", methods=['GET', 'POST'])
 def phone_validation():
     if request.method == 'POST' and session.get('customer_phone'):
+        print(1)
         if request.form['verification_code'] == session.get('verification_code'):
             session['verified'] = True
             try:
@@ -274,10 +285,13 @@ def phone_validation():
             return render_template('phone_validation.html')
 
     elif request.method == 'GET' and session.get('customer_phone'):
+        print(2)
+        print(session['verification_code'])
         send_confirmation_code(session['customer_phone'])
         return render_template('phone_validation.html')
 
     elif session.get('customer_phone') is None:
+        print(3)
         return redirect(url_for('.menu',
                                 allow_delivery=query(model_column=Delivery.allow_delivery),
                                 delivery_taxes=query(model_column=Delivery.delivery_tax),

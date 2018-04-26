@@ -21,7 +21,7 @@
     <div class="collapse navbar-collapse navbar-right" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">Log out</a>
+          <a class="nav-link" href="{{ url_for('RPOSS.logout') }}">Log out</a>
         </li>
       </ul>
     </div>
@@ -35,13 +35,14 @@
           <a href="{{ url_for('staff.pending_orders') }}" class="list-group-item list-group-item-action">Pending Orders</a>
           <a href="{{ url_for('staff.in_progress_orders') }}" class="list-group-item list-group-item-action">In Progress Orders</a>
           <a href="{{ url_for('staff.finished_orders') }}" class="list-group-item list-group-item-action">Finished Orders</a>
-          <a href="{{ url_for('staff.missed_orders') }}" class="list-group-item list-group-item-action active">Missed Orders</a>
+          <a href="{{ url_for('staff.missed_orders') }}" class="list-group-item list-group-item-action active">Missed/rejected Orders</a>
         </div>
       </div>
       <div class="col-sm-10 mt-3">
         <!-- Hello Section -->
-        <div class="hello-section">
-          <h3 class="font-weight-light">Hello, {{ session['employee_username'] }}.</h3>
+        <div class="hello-section row">
+          <div class="col-6"><h3 class="font-weight-light">Hello, {{ session['employee_username'] }}.</h3></div>
+          <div class="col-6"><button onClick="window.location.reload()" type="button" class="btn btn-primary float-right">Refresh</button></div>
         </div><!-- /.Hello Section -->
         <!-- All Orders Table -->
         <div class="table-responsive">
@@ -86,7 +87,6 @@
 <!-- Mustache Logic-less template -->
 <script src="https://raw.githack.com/janl/mustache.js/master/mustache.min.js"></script>
 <!-- Custom Javascript for This Template  -->
-<script src="{{ url_for("staff.static", filename="js/#") }}"></script>
 <script>
   $(function(){
     var orders = $('#orders');
@@ -112,9 +112,6 @@
       });
     };
     ajax_call();
-    var interval = 1000 * 60 * 2;
-    setInterval(ajax_call, interval);
-
   });
 </script>
 </body>

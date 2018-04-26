@@ -111,7 +111,7 @@
     background-color: #e95950;
 }
 
-.fa-snapchat-ghost:hover {
+.fa-snapchat:hover {
     background-color: #fffc00;
 }
 
@@ -150,7 +150,7 @@
     background-color: #f3f3f3;
 }
 
-.fa-snapchat-ghost {
+.fa-snapchat {
     padding:10px 14px;
     -o-transition:.5s;
     -ms-transition:.5s;

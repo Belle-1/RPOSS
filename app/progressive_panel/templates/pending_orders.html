@@ -21,7 +21,7 @@
     <div class="collapse navbar-collapse navbar-right" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">Log out</a>
+          <a class="nav-link" href="{{ url_for('RPOSS.logout') }}">Log out</a>
         </li>
       </ul>
     </div>
@@ -35,7 +35,7 @@
           <a href="{{ url_for('staff.pending_orders') }}" class="list-group-item list-group-item-action active">Pending Orders</a>
           <a href="{{ url_for('staff.in_progress_orders') }}" class="list-group-item list-group-item-action">In Progress Orders</a>
           <a href="{{ url_for('staff.finished_orders') }}" class="list-group-item list-group-item-action">Finished Orders</a>
-          <a href="{{ url_for('staff.missed_orders') }}" class="list-group-item list-group-item-action">Missed Orders</a>
+          <a href="{{ url_for('staff.missed_orders') }}" class="list-group-item list-group-item-action">Missed/rejected Orders</a>
         </div>
       </div>
       <div class="col-sm-10 mt-3">
@@ -43,8 +43,6 @@
         <div class="hello-section row">
           <div class="col-6"><h3 class="font-weight-light">Hello, {{ session['employee_username'] }}.</h3></div>
           <div class="col-6"><button onClick="window.location.reload()" type="button" class="btn btn-primary float-right">Refresh</button></div>
-          <!-- <h3 class="font-weight-light">Hello, {{ session['employee_username'] }}.</h3>
-          <button onClick="window.location.reload()" type="button" class="btn btn-primary">Refresh</button> -->
         </div><!-- /.Hello Section -->
 
         <!-- Pending Orders -->
@@ -159,14 +157,14 @@
     ajax_call();
 
     let countDown;
-
+    function pad2(number){return (number < 10 ? '0': '') + number};
     function startTimer(datetime_made, pending_remaining_time, display){
       const madeOn = new Date(datetime_made.slice(0, -2));
       const then = new Date(madeOn.getTime() + pending_remaining_time*60000);
 
       countDown = setInterval(() => {
         const timeLeft = new Date(then - Date.now());
-        $(display).text('-' + timeLeft.getMinutes().toString() + ":" + timeLeft.getSeconds().toString()) ;  // Display order's countdown timer
+        $(display).text('-' + timeLeft.getMinutes().toString() + ":" + pad2(timeLeft.getSeconds().toString())) ;  // Display order's countdown timer
 
         if (timeLeft <= 0 && $(display).length != 0) {
           $.ajax({
@@ -182,17 +180,6 @@
         }
       }, 1000)
     };
-
-      // $.ajax({
-      //   type: 'PUT',
-      //   url: '/RPOSS/progressive_panel/modify_order/' + order_id + '/' + status,
-      //   success: function(){
-      //     on_success
-      //   },
-      //   error: function(){
-      //     on_error
-      //   }
-      // });
 
     // For placing orders in optimal position
     var $grid = orders.masonry({
@@ -249,7 +236,6 @@
         }
       }
       $('[data-toggle="popover"]').popover({ trigger: "hover" });
-      function pad2(number){return (number < 10 ? '0': '') + number};
     });
 
   });
