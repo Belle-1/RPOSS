@@ -45,44 +45,35 @@
         </div><!-- /.Hello Section -->
 
         <!-- In Progress Orders -->
-        <div class="orders">
-          <div class="order-width in-progress-order">
+        <div id="orders">
+          {% raw %}
+          <template id="order-template">
+          <div class="order-width in-progress-order {{order_id}}">
             <div class="ml-3">
-              <h5 class="float-left font-weight-bold">#232451</h5>
-              <span class="float-right font-weight-bold text-danger mr-1">-8:36</span>
+              <h5 class="float-left font-weight-bold">#{{order_id}}</h5>
+              <span class="float-right font-weight-bold text-danger mr-1 {{order_id}}-remaining-time"></span>
             </div>
 
             <div class="mt-2 order-footer w-100 text-capitalize">
               <!-- Orders Details -->
               <div class="additional-info">
                 <table class="table table-borderless">
-                  <tbody>
-                    <tr>
-                      <td class="fit font-weight-bold">2x</td>
-                      <td class="text-uppercase">item name</td>
-                    </tr>
-                    <tr>
-                      <td class="fit font-weight-bold">2x</td>
-                      <td class="text-uppercase">item name</td>
-                    </tr>
-                    <tr>
-                      <td class="fit font-weight-bold">2x</td>
-                      <td class="text-uppercase">item name</td>
-                    </tr>
-                  </tbody>
+                  <tbody id="{{order_id}}-order"></tbody>
                 </table><!-- /.Order Details -->
                 <hr class="line">
                 <!-- Special Instruction -->
                 <p class="text-center">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  {{notes}}
                 </p><!-- /.Special Instruction -->
                 <hr class="line">
                 <div class="text-center">
-                  <button type="button" name="finished" class="text-uppercase btn btn-secondary">finished</button>
+                  <button type="button" id="finished" data-id="{{order_id}}" class="text-uppercase btn btn-secondary">finished</button>
                 </div>
               </div><!-- /.Additional Information -->
             </div>
           </div><!-- End of In Progress Order -->
+        </template>
+        {% endraw %}
       </div>
     </div>
   </div>
@@ -90,10 +81,57 @@
 <!-- Bootstrap JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="{{ url_for("staff.static", filename="js/lib/jquery-3.3.1.min.js") }}"></script>
+<script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+<script src="{{ url_for("staff.static", filename="js/lib/bootstrap.min.js") }}"></script>
 <script>
   $( document ).ready(function() {
+    var orders = $('#orders');
+    var orderTemplate = $("#order-template").html();
+    function addOrder(order){
+      orders.append(Mustache.render(orderTemplate, order[1]));
+    };
+    function addItem(order_id, item){
+      var items = $('#' + order_id + '-order')
+      items.append("<tr><td class='fit font-weight-bold'>"
+      + item.item_quantity + "x</td><td class='text-uppercase'>"
+      + item.item_name + "</td></tr>");
+    };
+
+    var ajax_call = function() {
+      $.ajax({
+        type: 'GET',
+        url: '/RPOSS/progressive_panel/get_orders/in_progress_orders',
+        success: function(orders){
+          $.each(orders, function(i, order){
+            addOrder(order);
+            $.each(order[1].items, function(i, item){
+              addItem(order[0], item);
+            });
+            // var display = '.' + order[1].order_id + '-remaining-time';
+            // startTimer(order[1].date_made + ' ' + order[1].time_made, order[1].pending_remaining_time, display);
+          });
+        },
+        error: function(){alert("Error loading orders.");}
+      });
+    };
+    ajax_call();
+
+    orders.on('click', '#finished', function(){
+      orderId = $(this).data('id');
+      $.ajax({
+        type: 'GET',
+        url: '/RPOSS/progressive_panel/modify_order/' + orderId + '/finished',
+        success: function(orders){
+          $('#' + orderId).remove();
+          $grid.masonry("reloadItems");
+          $grid.masonry();
+        },
+        error: function(){alert("Error loading orders.");}
+      });
+    });
+
     // For placing orders in optimal position
-    var $grid = $('.orders').masonry({
+    var $grid = orders.masonry({
       itemSelector: '.in-progress-order',
       columnWidth: '.order-width',
       stagger: 15,
@@ -102,19 +140,8 @@
     $grid.masonry("reloadItems");
     $grid.masonry();
 
-    // Each pending order's additional information will show on click based on $this value!
-    // $(".pending-order").on("click", function () {
-    //   //
-    //   var btnDecline = $(this)["0"].children[3].children[3].children[7].childNodes[3]
-    //   // init layout
-    //   $grid.masonry("reloadItems");
-    //   $grid.masonry();
-    // });
-
   });
 </script>
-<script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
-<script src="{{ url_for("staff.static", filename="js/lib/bootstrap.min.js") }}"></script>
 <!-- Masonry Cascading grid layout library -->
 <script src="{{ url_for("staff.static", filename="js/lib/masonry.pkgd.js") }}"></script>
 </body>

@@ -96,36 +96,16 @@
                       </tr>
                     </tbody>
                   </table><!-- /.Billing Info -->
-                  <div class="text-center">
-                    <button type="button" name="confitm" class="text-uppercase btn btn-secondary" data-order-id='dasdsdsdsdds'>confirm</button>
-                    <button type="button" name="decline" class="myBtn text-uppercase btn btn-outline-secondary" data-order-id='dasdsdsdsdds'>decline</button>
+                  <div class="text-center" data-id="{{order_id}}">
+                    <button type="button" id='confirm' name="confirm" class="text-uppercase btn btn-secondary">confirm</button>
+                    <button type="button" id="decline" name="decline" class="text-uppercase btn btn-outline-secondary" data-toggle="popover" title="Mark this order as rejected" data-content="Note: your customer will recieve notification about this action">decline</button>
                   </div>
                 </div><!-- /.Additional Information -->
               </div>
             </div>
           </template>
           {% endraw %}
-        </div>
-          <!-- End of Pending Orders -->
-
-        <!-- REJECTING A PENDING CONFIRMATION MODAL -->
-        <div class="modal mt-5" id="myModal">
-          <div class="modal-dialog">
-            <div class="modal-content"><!-- modal content -->
-              <div class="modal-header"><!-- modal header -->
-                <h4 class="text-capitalize">Mark this order as rejected</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              </div><!-- /.modal header -->
-              <div class="modal-body"><!-- modal body -->
-                Note: your customers will recieve notification about this action
-              </div> <!-- /.modal body -->
-              <div class="modal-footer"> <!-- modal footer -->
-                <button id="" class="btn btn-secondary">decline order</button>
-                <button id="" class="btn btn-outline-secondary" data-dismiss="modal">cancel</button>
-              </div><!-- /.footer -->
-            </div><!-- /.modal content -->
-          </div>
-        </div><!-- /.REJECTING A PENDING CONFIRMATION MODAL -->
+        </div><!-- End of Pending Orders -->
       </div>
     </div>
   </div>
@@ -135,10 +115,9 @@
 <script src="{{ url_for("staff.static", filename="js/lib/jquery-3.3.1.min.js") }}"></script>
 <script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
 <script src="{{ url_for("staff.static", filename="js/lib/bootstrap.min.js") }}"></script>
-<!-- Custom Javascript for This Template  -->
-<script src="{{ url_for("staff.static", filename="js/#") }}"></script>
 <!-- Mustache Logic-less template -->
 <script src="https://raw.githack.com/janl/mustache.js/master/mustache.min.js"></script>
+<!-- Custom Javascript for This Template  -->
 <script>
   $(function(){
 
@@ -226,27 +205,53 @@
     $grid.masonry();
 
     // Each pending order's additional information will show on click based on $this value!
-    orders.on("click", ".pending-order", function () {
-      // div .additional-info
-      var additionalInfo = $(this)["0"].children[3].childNodes[9]
-      //
-      var btnConfirm = $(this)["0"].children[3].children[3].children[7].childNodes[1]
-      //
-      var btnDecline = $(this)["0"].children[3].children[3].children[7].childNodes[3]
-      // Toggle order's additional information.
-      $(additionalInfo).slideToggle(0);
-      // init layout
-      $grid.masonry("reloadItems");
-      $grid.masonry();
+    orders.on("click", ".pending-order", function (event) {
+      if (event.target.tagName !== 'BUTTON') {
+        // .additional-info div
+        var additionalInfo = $(this)["0"].children[3].childNodes[9]
+        // Toggle order's additional information.
+        $(additionalInfo).slideToggle(0);
+        // init layout
+        $grid.masonry("reloadItems");
+        $grid.masonry();
+      } else if (event.target.tagName == 'BUTTON') {
+        // button clicked
+        var action = event.target.id;
+        // order's id
+        var order_id = $(event.target).parent().data('id');
+        if (action == 'confirm') {
+          $.ajax({
+            type: 'PUT',
+            url: '/RPOSS/progressive_panel/modify_order/' + order_id + '/in_progress',
+            success: function(){
+              $('.' + order_id).remove();
+              $grid.masonry("reloadItems");
+              $grid.masonry();
+            },
+            error: function(){
+              console.log('There was an error confirming the order.')
+            }
+          });
+        } else if (action == 'decline') {
+          $.ajax({
+            type: 'PUT',
+            url: '/RPOSS/progressive_panel/modify_order/' + order_id + '/rejected',
+            success: function(){
+              $('#' + action).popover('hide');
+              $('.' + order_id).remove();
+              $grid.masonry("reloadItems");
+              $grid.masonry();
+            },
+            error: function(){
+              console.log('There was an error rejecting the order.')
+            }
+          });
+        }
+      }
+      $('[data-toggle="popover"]').popover({ trigger: "hover" });
+      function pad2(number){return (number < 10 ? '0': '') + number};
     });
 
-    // Rejecting a pending order
-    orders.on('click', ".myBtn", function(){
-      var orderId = $(this).data('order-id');
-      var rejectionModal = $("#myModal");
-      // the following is for the python implementaion phase for tracking the value of the pressed order.
-      rejectionModal.modal();
-    });
   });
 </script>
 <!-- Masonry Cascading grid layout library -->

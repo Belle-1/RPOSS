@@ -3,6 +3,7 @@ from sqlalchemy import exc, and_, or_
 from app import db_session
 from app.models import Orders, Customers, OrdersTiming, OrderItems, Delivery
 from app.utilities import query
+import datetime
 
 
 Smod = Blueprint('staff', __name__,
@@ -43,9 +44,19 @@ def get_orders(page):
 
 @Smod.route('/modify_order/<order_id>/<status>', methods=['PUT'])
 def modify_menu_item(order_id, status):
-    db_session.query(Orders).filter(Orders.order_id == int(order_id)).update({"status": status})
-    db_session.commit()
-    return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
+    on_success = jsonify({'success': True}), 200, {'ContentType': 'application/json'}
+    if status == 'missed':
+        db_session.query(Orders).filter(Orders.order_id == int(order_id)).update({"status": status, "datetime_confirmed": datetime.datetime.now()})
+        db_session.commit()
+        return on_success
+    elif status == 'in_progress':
+        db_session.query(Orders).filter(Orders.order_id == int(order_id)).update({"status": status, "datetime_confirmed": datetime.datetime.now()})
+        db_session.commit()
+        return on_success
+    elif status == 'rejected':
+        db_session.query(Orders).filter(Orders.order_id == int(order_id)).update({"status": status, "datetime_confirmed": datetime.datetime.now()})
+        db_session.commit()
+        return on_success
 
 
 def fetch_orders(page):
