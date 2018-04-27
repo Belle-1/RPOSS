@@ -55,17 +55,17 @@
           <div class="main-column"><!-- Main Column -->
             <h3 class="text-uppercase font-weight-bold">ordering methods</h3>
             <hr class="line mt-3">
-            <form class="form-group" action="/RPOSS/owner_panel/orders_hampers" method="post">
+            <form class="form-group ordering-methods" action="/RPOSS/owner_panel/orders_hampers" method="post">
               {{ orders_methods_form.csrf_token }}
-              {{ wtf.form_field(orders_methods_form.allow_pickup) }}
+              {{ wtf.form_field(orders_methods_form.allow_pickup, value=allow_pickup) }}
               {{ wtf.form_field(orders_methods_form.pickup_payment_methods) }}
-              {{ wtf.form_field(orders_methods_form.pickup_tax) }}
-              {{ wtf.form_field(orders_methods_form.allow_delivery) }}
+              {{ wtf.form_field(orders_methods_form.pickup_tax, value=pickup_tax) }}
+              {{ wtf.form_field(orders_methods_form.allow_delivery, vlaue=false) }}
               {{ wtf.form_field(orders_methods_form.delivery_payment_methods) }}
-              {{ wtf.form_field(orders_methods_form.delivery_charges) }}
-              {{ wtf.form_field(orders_methods_form.delivery_tax) }}
-              {{ wtf.form_field(orders_methods_form.min_order_amount) }}
-              {{ wtf.form_field(orders_methods_form.max_order_amount ) }}
+              {{ wtf.form_field(orders_methods_form.delivery_charges, vlaue=delivery_charges) }}
+              {{ wtf.form_field(orders_methods_form.delivery_tax, vlaue=delivery_tax) }}
+              {{ wtf.form_field(orders_methods_form.min_order_amount, vlaue=min_amount) }}
+              {{ wtf.form_field(orders_methods_form.max_order_amount , vlaue=max_amount) }}
               {{ wtf.form_field(orders_methods_form.methods_submit, class="btn btn-primary text-uppercase float-right") }}
             </form>
           </div><!-- /.Main Column -->
@@ -120,7 +120,5 @@
 <script src="{{ url_for("owner_panel.static", filename="js/lib/jquery-3.3.1.min.js") }}"></script>
 <script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
 <script src="{{ url_for("owner_panel.static", filename="js/lib/bootstrap.min.js") }}"></script>
-<!-- Scroll Reveal Library -->
-<script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
 </body>
 </html>

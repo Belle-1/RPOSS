@@ -92,17 +92,11 @@ class MenuItems(FlaskForm):
 
 
 class OrdersHampersMethods(FlaskForm):
-    allow_pickup = BooleanField('allow pick-up orders',
-                                default=True)
-    pickup_payment_methods = SelectField('payment methods',
-                                         choices=[('COD', 'COD')],
-                                         validators=[DataRequired()])
+    allow_pickup = BooleanField('allow pick-up orders', default=True)
+    pickup_payment_methods = SelectField('payment methods', choices=[('COD', 'COD')])
     pickup_tax = IntegerField('tax')
-    allow_delivery = BooleanField('allow delivery orders',
-                                  default=True)
-    delivery_payment_methods = SelectField('payment methods',
-                                           choices=[('COD', 'COD')],
-                                           validators=[DataRequired()])
+    allow_delivery = BooleanField('allow delivery orders', default=True)
+    delivery_payment_methods = SelectField('payment methods', choices=[('COD', 'COD')])
     delivery_tax = IntegerField('tax')
     delivery_charges = FloatField('Delivery charges')
     min_order_amount = FloatField('minimum order amount')

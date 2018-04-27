@@ -8,6 +8,7 @@ from app.models import RestaurantBaseInformation, OpeningHours, SocialMedia, \
     MenuSetUp, MenuItems as MenuItemsTable, PickUp, Delivery, OrdersTiming, Employee
 from werkzeug.utils import secure_filename
 import os
+from app.utilities import query
 
 
 Omod = Blueprint('owner_panel', __name__,
@@ -28,16 +29,18 @@ def restaurant():
                 data = {
                     'restaurant_name': base_form.restaurant_name.data,
                     'restaurant_about': base_form.restaurant_about.data,
-                    'restaurant_img': uploadimage(base_form.restaurant_welcome_img,
-                                                  'app\owner_panel\static\img\home_page'),
+                    'restaurant_img': os.path.join('img/home_page/',
+                                                   uploadimage(base_form.restaurant_welcome_img,
+                                                               'app\owner_panel\static\img\home_page')),
                     'restaurant_address_line': base_form.restaurant_address_line.data,
                     'restaurant_city': base_form.restaurant_city.data,
                     'restaurant_country': base_form.restaurant_country.data,
                     'restaurant_zipcode': base_form.restaurant_zipcode.data,
                     'restaurant_email': base_form.restaurant_email.data,
                     'restaurant_phone_number': base_form.restaurant_phone.data,
-                    'restaurant_logo': uploadimage(base_form.restaurant_logo,
-                                                   "app\owner_panel\static\img\home_page"),
+                    'restaurant_logo': os.path.join("img/home_page/",
+                                                    uploadimage(base_form.restaurant_logo,
+                                                                "app\owner_panel\static\img\home_page")),
                 }
 
                 updatedata(data, RestaurantBaseInformation)
@@ -63,13 +66,13 @@ def restaurant():
                 updatedata(data, OpeningHours)
 
             elif media_form.media_submit.data and media_form.validate():
-                data = {
-                    'restaurant_facebook': media_form.restaurant_facebook.data,
-                    'restaurant_twitter': media_form.restaurant_twitter.data,
-                    'restaurant_instagram': media_form.restaurant_instagram.data,
-                    'restaurant_snapchat': media_form.restaurant_snapchat.data,
-                    'restaurant_yelp': media_form.restaurant_yelp.data,
-                }
+                data = {}
+                for k, v in media_form.data.items():
+                    if v is not '' and k is not 'csrf_token' and k is not 'media_submit':
+                        if v.lower().startswith('https://'):
+                            data[k] = v[8:]
+                        elif v.lower().startswith('http://'):
+                            data[k] = v[7:]
 
                 update_social_media(data)
 
@@ -90,7 +93,7 @@ def menu():
             if menu_setup_form.menu_setup_submit.data and menu_setup_form.validate():
 
                 data = {
-                    'restaurant_image': os.path.join('static/img/home_page/',
+                    'restaurant_image': os.path.join('img/home_page/',
                                                      uploadimage(menu_setup_form.restaurant_menu_image,
                                                                  "app\owner_panel\static\img\home_page")),
                     'restaurant_description': menu_setup_form.restaurant_menu_description.data,
@@ -173,7 +176,7 @@ def orders_hampers():
                     "allow_pickup":  orders_methods_form.allow_pickup.data,
                     "pickup_tax":  orders_methods_form.pickup_tax.data,
                 }
-                deliver_data = {
+                delivery_data = {
                     "allow_delivery":  orders_methods_form.allow_delivery.data,
                     "delivery_tax":  orders_methods_form.delivery_tax.data,
                     "delivery_charges": orders_methods_form.delivery_charges.data,
@@ -182,7 +185,7 @@ def orders_hampers():
                 }
 
                 updatedata(pickup_data, PickUp)
-                updatedata(deliver_data, Delivery)
+                updatedata(delivery_data, Delivery)
 
             elif orders_timing_form.timing_submit.data and orders_timing_form.validate():
                 data = {
@@ -195,7 +198,14 @@ def orders_hampers():
 
         return render_template('owner_orders_hampers.html',
                                orders_methods_form=orders_methods_form,
-                               orders_timing_form=orders_timing_form)
+                               orders_timing_form=orders_timing_form,
+                               allow_pickup=query(model_column=PickUp.allow_pickup),
+                               allow_delivery=query(model_column=Delivery.allow_delivery),
+                               delivery_taxes=query(model_column=Delivery.delivery_tax),
+                               pickup_tax=query(model_column=PickUp.pickup_tax),
+                               delivery_charges=query(model_column=Delivery.delivery_charges),
+                               min_amount=query(model_column=Delivery.min_amount),
+                               max_amount=query(model_column=Delivery.max_amount))
     return redirect(url_for('RPOSS.login'))
 
 
@@ -228,7 +238,7 @@ def system_interfaces():
 def uploadimage(form_field, path):
     image = form_field.data
     image_name = secure_filename(image.filename)
-    image.save(os.path.join(os.path.abspath(path), 'logo.jpg'))
+    image.save(os.path.join(os.path.abspath(path), image_name))
     return image_name
 
 

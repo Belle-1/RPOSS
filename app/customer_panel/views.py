@@ -3,7 +3,7 @@ from ..forms import ContactUsForm, CustomerDetailsForm, DeliveryCustomerDetailsF
 from instance.config import send_mail
 from app import db_session
 from app.models import MenuItems, Delivery, OpeningHours, Orders, OrderItems, Customers, OrdersTiming, SocialMedia,\
-    RestaurantBaseInformation, MenuSetUp
+    RestaurantBaseInformation, MenuSetUp, PickUp
 from app.utilities import query, send_confirmation_code, is_number_valid
 from sqlalchemy import exc
 from twilio.base.exceptions import TwilioException
@@ -41,7 +41,7 @@ def index():
         'friday':  query(model_column=OpeningHours.friday),
     }
     working_days = [day for day, value in days.items() if value]
-    print(query(model_column=RestaurantBaseInformation.restaurant_img))
+
     return render_template('index.html',
                            contact_us_form=contact_us_form,
                            social_media=db_session.query(SocialMedia).all(),
@@ -52,6 +52,7 @@ def index():
                            restaurant_logo=query(model_column=RestaurantBaseInformation.restaurant_logo),
                            restaurant_address_line=query(model_column=RestaurantBaseInformation.restaurant_address_line),
                            restaurant_city=query(model_column=RestaurantBaseInformation.restaurant_city),
+                           menu_image=query(model_column=MenuSetUp.restaurant_image),
                            restaurant_country=query(model_column=RestaurantBaseInformation.restaurant_country),
                            restaurant_zipcode=query(model_column=RestaurantBaseInformation.restaurant_zipcode),
                            restaurant_email=query(model_column=RestaurantBaseInformation.restaurant_email),
@@ -165,6 +166,7 @@ def few_steps():
                                    customer_details_form=customer_details_form,
                                    delivery_customer_details_form=delivery_customer_details_form,
                                    allow_delivery=query(model_column=Delivery.allow_delivery),
+                                   allow_pickup=query(model_column=PickUp.allow_pickup),
                                    delivery_taxes=query(model_column=Delivery.delivery_tax),
                                    delivery_charges=query(model_column=Delivery.delivery_charges),
                                    min_amount=query(model_column=Delivery.min_amount),
@@ -230,6 +232,7 @@ def few_steps():
                                    customer_details_form=customer_details_form,
                                    delivery_customer_details_form=delivery_customer_details_form,
                                    allow_delivery=query(model_column=Delivery.allow_delivery),
+                                   allow_pickup=query(model_column=PickUp.allow_pickup),
                                    delivery_taxes=query(model_column=Delivery.delivery_tax),
                                    delivery_charges=query(model_column=Delivery.delivery_charges),
                                    min_amount=query(model_column=Delivery.min_amount),
@@ -239,6 +242,7 @@ def few_steps():
                                customer_details_form=customer_details_form,
                                delivery_customer_details_form=delivery_customer_details_form,
                                allow_delivery=query(model_column=Delivery.allow_delivery),
+                               allow_pickup=query(model_column=PickUp.allow_pickup),
                                delivery_taxes=query(model_column=Delivery.delivery_tax),
                                delivery_charges=query(model_column=Delivery.delivery_charges),
                                min_amount=query(model_column=Delivery.min_amount),
@@ -249,9 +253,11 @@ def few_steps():
                                                                                           from_date.strftime('%H:%M %p'),
                                                                                           to_date.strftime('%H:%M %p')),
               'warning')
+
         return render_template('few_steps.html',
                                customer_details_form=customer_details_form,
                                delivery_customer_details_form=delivery_customer_details_form,
+                               allow_pickup=query(model_column=PickUp.allow_pickup),
                                allow_delivery=query(model_column=Delivery.allow_delivery),
                                delivery_taxes=query(model_column=Delivery.delivery_tax),
                                delivery_charges=query(model_column=Delivery.delivery_charges),
