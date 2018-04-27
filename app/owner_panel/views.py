@@ -28,18 +28,16 @@ def restaurant():
                 data = {
                     'restaurant_name': base_form.restaurant_name.data,
                     'restaurant_about': base_form.restaurant_about.data,
-                    'restaurant_img': os.path.join('static/img/home_page/',
-                                                   uploadimage(base_form.restaurant_welcome_img,
-                                                               'app\owner_panel\static\img\home_page')),
+                    'restaurant_img': uploadimage(base_form.restaurant_welcome_img,
+                                                  'app\owner_panel\static\img\home_page'),
                     'restaurant_address_line': base_form.restaurant_address_line.data,
                     'restaurant_city': base_form.restaurant_city.data,
                     'restaurant_country': base_form.restaurant_country.data,
                     'restaurant_zipcode': base_form.restaurant_zipcode.data,
                     'restaurant_email': base_form.restaurant_email.data,
                     'restaurant_phone_number': base_form.restaurant_phone.data,
-                    'restaurant_logo': os.path.join("static/img/home_page/",
-                                                    uploadimage(base_form.restaurant_logo,
-                                                                "app\owner_panel\static\img\home_page")),
+                    'restaurant_logo': uploadimage(base_form.restaurant_logo,
+                                                   "app\owner_panel\static\img\home_page"),
                 }
 
                 updatedata(data, RestaurantBaseInformation)
@@ -229,9 +227,9 @@ def system_interfaces():
 
 def uploadimage(form_field, path):
     image = form_field.data
-    secure_image_name = secure_filename(image.filename)
-    image.save(os.path.join(os.path.abspath(path), secure_image_name))
-    return secure_image_name
+    image_name = secure_filename(image.filename)
+    image.save(os.path.join(os.path.abspath(path), 'logo.jpg'))
+    return image_name
 
 
 def updatedata(data, model):

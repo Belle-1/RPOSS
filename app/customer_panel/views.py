@@ -41,12 +41,15 @@ def index():
         'friday':  query(model_column=OpeningHours.friday),
     }
     working_days = [day for day, value in days.items() if value]
+    print(query(model_column=RestaurantBaseInformation.restaurant_img))
     return render_template('index.html',
                            contact_us_form=contact_us_form,
                            social_media=db_session.query(SocialMedia).all(),
                            restaurant_name=query(model_column=RestaurantBaseInformation.restaurant_name),
+                           restaurant_img=query(model_column=RestaurantBaseInformation.restaurant_img),
                            restaurant_about=query(model_column=RestaurantBaseInformation.restaurant_about),
                            restaurant_menu_description=query(model_column=MenuSetUp.restaurant_description),
+                           restaurant_logo=query(model_column=RestaurantBaseInformation.restaurant_logo),
                            restaurant_address_line=query(model_column=RestaurantBaseInformation.restaurant_address_line),
                            restaurant_city=query(model_column=RestaurantBaseInformation.restaurant_city),
                            restaurant_country=query(model_column=RestaurantBaseInformation.restaurant_country),
@@ -266,7 +269,6 @@ def few_steps():
 @Cmod.route("/phone_validation", methods=['GET', 'POST'])
 def phone_validation():
     if request.method == 'POST' and session.get('customer_phone'):
-        print(1)
         if request.form['verification_code'] == session.get('verification_code'):
             session['verified'] = True
             try:
@@ -285,13 +287,10 @@ def phone_validation():
             return render_template('phone_validation.html')
 
     elif request.method == 'GET' and session.get('customer_phone'):
-        print(2)
-        print(session['verification_code'])
         send_confirmation_code(session['customer_phone'])
         return render_template('phone_validation.html')
 
     elif session.get('customer_phone') is None:
-        print(3)
         return redirect(url_for('.menu',
                                 allow_delivery=query(model_column=Delivery.allow_delivery),
                                 delivery_taxes=query(model_column=Delivery.delivery_tax),

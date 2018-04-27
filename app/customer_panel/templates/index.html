@@ -26,7 +26,7 @@
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <h1 class="navbar-brand mb-0"><img src="{{ url_for("owner_panel.static", filename="img/home_page/logo.jpg") }}" width="30" height="30" class="d-inline-block align-top" alt=""> Restaurant Name</h1>
+    <h1 class="navbar-brand mb-0"><img src="{{ url_for('owner_panel.static', filename='img/home_page/{{ restaurant_logo }}') }}" width="30" height="30" class="d-inline-block align-top text-capitalize"> {{ restaurant_name }}</h1>
     <div class="collapse navbar-collapse navbar-right" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
@@ -46,7 +46,7 @@
   </nav> <!-- END Navigation Bar -->
 <!-- Welcome Section -->
   <div class="welcome-section">
-  	<img src="{{ url_for("owner_panel.static", filename="img/home_page/welcome.jpg") }}" class="img-fluid" alt="Responsive image">
+  	<img src="{{ url_for('owner_panel.static', filename='img/home_page/{{ restaurant_img }}') }}" class="img-fluid" alt="Responsive image">
     <div>
   	<h3 class="scroll text-uppercase font-weight-bold">welcome to</h3>
   	<h1 class="scroll text-uppercase font-weight-bold">{{ restaurant_name }}</h1>
@@ -115,9 +115,5 @@
 <script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
 <!-- custome javascript for this template -->
 <script src="{{ url_for('customer.static', filename='js/home.js') }}"></script>
-<script>
-    myimg = "{{ url_for('owner_panel.static', filename='img/home_page/menu.jpg') }}";
-    document.getElementById("menu-img").src = myimg;
-</script>
 </body>
 </html>

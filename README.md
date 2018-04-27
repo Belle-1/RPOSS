@@ -83,7 +83,7 @@ The purpose of this documentation is to give a detailed description of the requi
 
 This document is going to serve as the stepping stone for the upcoming versions of this system.
 ### Scope
-The Restaurant POS System (RPOSS) is an application designed for restaurant, not only imrpove the customer's experience, but also to ease the workload on the restaurant staff by providing the online-ordering functionalities to the restaurant website.
+The Restaurant POS System (RPOSS) is an application designed for restaurants' owners, not only to imrpove the customer's experience, but also to ease the workload on the restaurant staff by providing the online-ordering functionalities to the restaurant website.
  	 
 The RPOSS application is hosted on a cloud hosting service which means the system does not need any infrastructure downloaded on the restaurant premises. For all different users of the system need to be able to use it is a web browser, meaning this application works on any device.
 ### Definitions, acronyms, and abbreviation
