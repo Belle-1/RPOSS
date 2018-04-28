@@ -143,6 +143,7 @@ class CustomerDetailsForm(FlaskForm):
                                  validators=[DataRequired()])
     customer_email = StringField('E-mail',
                                  validators=[DataRequired(), Email()])
+    notes = TextAreaField('Special instruction')
 
 
 class DeliveryCustomerDetailsForm(FlaskForm):

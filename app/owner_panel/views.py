@@ -8,7 +8,7 @@ from app.models import RestaurantBaseInformation, OpeningHours, SocialMedia, \
     MenuSetUp, MenuItems as MenuItemsTable, PickUp, Delivery, OrdersTiming, Employee
 from werkzeug.utils import secure_filename
 import os
-from app.utilities import query
+from app.utilities import query, working_days
 
 
 Omod = Blueprint('owner_panel', __name__,
@@ -79,7 +79,24 @@ def restaurant():
         return render_template('owner_restaurant.html',
                                base_form=base_form,
                                opening_form=opening_form,
-                               media_form=media_form)
+                               media_form=media_form,
+                               restaurant_name=query(model_column=RestaurantBaseInformation.restaurant_name),
+                               restaurant_about=query(model_column=RestaurantBaseInformation.restaurant_about),
+                               restaurant_address_line=query(model_column=RestaurantBaseInformation.restaurant_address_line),
+                               restaurant_city=query(model_column=RestaurantBaseInformation.restaurant_city),
+                               restaurant_country=query(model_column=RestaurantBaseInformation.restaurant_country),
+                               restaurant_zipcode=query(model_column=RestaurantBaseInformation.restaurant_zipcode),
+                               restaurant_email=query(model_column=RestaurantBaseInformation.restaurant_email),
+                               restaurant_phone_number=query(model_column=RestaurantBaseInformation.restaurant_phone_number),
+                               from_date=query(model_column=OpeningHours.from_date),
+                               to_date=query(model_column=OpeningHours.to_date),
+                               working_days=working_days,
+                               facebook=query(model_column=SocialMedia.site_link, model_filter=SocialMedia.site_name,filter_by='facebook'),
+                               twitter=query(model_column=SocialMedia.site_link,model_filter=SocialMedia.site_name, filter_by='twitter'),
+                               snapchat=query(model_column=SocialMedia.site_link, model_filter=SocialMedia.site_name, filter_by='snapchat'),
+                               instagram=query(model_column=SocialMedia.site_link, model_filter=SocialMedia.site_name,filter_by='instagram'),
+                               yelp=query(model_column=SocialMedia.site_link, model_filter=SocialMedia.site_name, filter_by='yelp'),
+        )
     return redirect(url_for('RPOSS.login'))
 
 
@@ -117,7 +134,8 @@ def menu():
 
         return render_template('owner_menu.html',
                                menu_setup_form=menu_setup_form,
-                               menu_items_form=menu_items_form)
+                               menu_items_form=menu_items_form,
+                               menu_description=query(model_column=MenuSetUp.restaurant_description))
     return redirect(url_for('RPOSS.login'))
 
 
@@ -205,7 +223,10 @@ def orders_hampers():
                                pickup_tax=query(model_column=PickUp.pickup_tax),
                                delivery_charges=query(model_column=Delivery.delivery_charges),
                                min_amount=query(model_column=Delivery.min_amount),
-                               max_amount=query(model_column=Delivery.max_amount))
+                               max_amount=query(model_column=Delivery.max_amount),
+                               delivery_time=query(model_column=OrdersTiming.delivery_time),
+                               preparing_time=query(model_column=OrdersTiming.preparing_time),
+                               pending_time=query(model_column=OrdersTiming.pending_time))
     return redirect(url_for('RPOSS.login'))
 
 

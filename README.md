@@ -222,7 +222,7 @@ The RPOSS depends on some libraries for its functions. These tools are already p
 
 | Service/Software name | Functionality of the software | accomplishes this system requirements |
 | --- | --- | --- |
-| Twillio | - Two-Factor(2FA) authentication service. - Alphanumeric sender ID. | - Verifying restaurant customers' identities. - Sending SMS messages using a personalized sender name. |
+| Twilio | - Two-Factor(2FA) authentication service. - Alphanumeric sender ID. | - Verifying restaurant customers' identities. - Sending SMS messages using a personalized sender name. |
 | jQuery-AJAx | Request JSON from remote server. | Requesting and receiving data from server. |
 | SMTPlib | Sending e-mails. | Sending confirmation e-mails to customers. |
 | Network device | Provides internet access. | Connect restaurant users to the RPOSS. |
@@ -553,8 +553,10 @@ since this app is mostly RESTfull API architectural styled, here is the implemen
 - [x] Routing.
 - [x] Templates & forms.
 - [x] CRUD functionalities.
-- [ ] API endpoints.
-- [ ] Styling and message flashing
+- [x] API endpoints.
+- [x] Styling and message flashing
 
-
-
+## Uncompleted Features
+the following features were not implementes due to the lack of materials:
+- **FR18** - printing receipts & confirming customers about their order via E-mail.
+- **twilio Alphanumeric ID**.

@@ -4,7 +4,7 @@ from instance.config import send_mail
 from app import db_session
 from app.models import MenuItems, Delivery, OpeningHours, Orders, OrderItems, Customers, OrdersTiming, SocialMedia,\
     RestaurantBaseInformation, MenuSetUp, PickUp
-from app.utilities import query, send_confirmation_code, is_number_valid
+from app.utilities import query, send_confirmation_code, is_number_valid, working_days
 from sqlalchemy import exc
 from twilio.base.exceptions import TwilioException
 import datetime
@@ -31,16 +31,6 @@ def index():
             flash('Message sent successfully.', 'success')
         except:
             flash('There was an error sending your message. Please, try again later.', 'danger')
-    days = {
-        'saturday':  query(model_column=OpeningHours.saturday),
-        'sunday':  query(model_column=OpeningHours.sunday),
-        'monday':  query(model_column=OpeningHours.monday),
-        'tuesday':  query(model_column=OpeningHours.tuesday),
-        'wednesday':  query(model_column=OpeningHours.wednesday),
-        'thursday':  query(model_column=OpeningHours.thursday),
-        'friday':  query(model_column=OpeningHours.friday),
-    }
-    working_days = [day for day, value in days.items() if value]
 
     return render_template('index.html',
                            contact_us_form=contact_us_form,
@@ -77,7 +67,7 @@ def menu():
 @Cmod.route("/get_menu_items", methods=['GET'])
 def get_menu_items():
     categories_set = set()
-    menu_items = db_session.query(MenuItems).all()
+    menu_items = db_session.query(MenuItems).filter(MenuItems.item_status == 'active').all()
     # get categories out
     for item in menu_items: categories_set.add(item.item_category)
     # CMS
@@ -95,16 +85,6 @@ def few_steps():
     delivery_customer_details_form = DeliveryCustomerDetailsForm()
     from_date = query(model_column=OpeningHours.from_date)
     to_date = query(model_column=OpeningHours.to_date)
-    days = {
-        'saturday':  query(model_column=OpeningHours.saturday),
-        'sunday':  query(model_column=OpeningHours.sunday),
-        'monday':  query(model_column=OpeningHours.monday),
-        'tuesday':  query(model_column=OpeningHours.tuesday),
-        'wednesday':  query(model_column=OpeningHours.wednesday),
-        'thursday':  query(model_column=OpeningHours.thursday),
-        'friday':  query(model_column=OpeningHours.friday),
-    }
-    working_days = [day for day, value in days.items() if value]
 
     # checks if the customer's POST request is within restaurant's opening days/hours
     within_working_day = ((from_date < datetime.datetime.now().time() < to_date) and datetime.datetime.now().strftime('%A').lower() in working_days)
@@ -122,7 +102,7 @@ def few_steps():
             address_line2 = ''
             state = ''
             zipcode = ''
-            notes = ''
+            notes = customer_details_form.notes.data
 
             try:
                 is_number_valid(customer_phone)

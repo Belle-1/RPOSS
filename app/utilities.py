@@ -101,6 +101,17 @@ orders_timing_options = {
 	'pending_time': query(model_column=OrdersTiming.pending_time),
 	}
 
+days = {
+        'saturday': query(model_column=OpeningHours.saturday),
+        'sunday': query(model_column=OpeningHours.sunday),
+        'monday': query(model_column=OpeningHours.monday),
+        'tuesday': query(model_column=OpeningHours.tuesday),
+        'wednesday': query(model_column=OpeningHours.wednesday),
+        'thursday': query(model_column=OpeningHours.thursday),
+        'friday': query(model_column=OpeningHours.friday),
+        }
+working_days = [day for day, value in days.items() if value]
+
 
 
 

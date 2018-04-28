@@ -58,13 +58,17 @@
             <input type="submit" value="Place order" class="btn btn-secondary btn-block text-uppercase mt-5">
             </div>
             {% if allow_delivery %}
-            <div class="col-5 delivery-additional-fields">
-               {{ wtf.form_field(delivery_customer_details_form.address_line1) }}
-               {{ wtf.form_field(delivery_customer_details_form.address_line2) }}
-               {{ wtf.form_field(delivery_customer_details_form.state) }}
-               {{ wtf.form_field(delivery_customer_details_form.zipcode) }}
-               {{ wtf.form_field(delivery_customer_details_form.notes) }}
-            </div>
+	            <div class="col-5 delivery-additional-fields">
+	               	{{ wtf.form_field(delivery_customer_details_form.address_line1) }}
+	               	{{ wtf.form_field(delivery_customer_details_form.address_line2) }}
+	               	{{ wtf.form_field(delivery_customer_details_form.state) }}
+	               	{{ wtf.form_field(delivery_customer_details_form.zipcode) }}
+	               	{{ wtf.form_field(delivery_customer_details_form.notes) }}
+	            </div>
+            {% else %}
+               	<div class="col-5 mt-4">
+               	{{ wtf.form_field(customer_details_form.notes) }}
+                </div>
             {% endif %}
           </form>
         </div>
@@ -134,7 +138,6 @@
   displayOrder();
   saveOrder();
   createCookie('order', JSON.stringify(loadOrder()));
-  console.log(loadOrder());
 </script>
 </body>
 </html>

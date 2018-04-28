@@ -22,7 +22,7 @@
     <div class="collapse navbar-collapse navbar-right" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">Log out</a>
+          <a class="nav-link" href="{{ url_for('RPOSS.logout') }}">Log out</a>
         </li>
       </ul>
     </div>
@@ -55,25 +55,25 @@
           <div class="main-column"><!-- Main Column -->
             <h3 class="text-uppercase font-weight-bold">base information</h3>
             <hr class="line mt-3">
-            <form class="from-group" action="/RPOSS/owner_panel/restaurant" method="post" enctype="multipart/form-data">
+            <form class="form-group" action="/RPOSS/owner_panel/restaurant" method="post" enctype="multipart/form-data">
               {{ base_form.csrf_token }}
-              {{ wtf.form_field(base_form.restaurant_name) }}
+              {{ wtf.form_field(base_form.restaurant_name, value=restaurant_name) }}
               {{ wtf.form_field(base_form.restaurant_about) }}
               {{ wtf.form_field(base_form.restaurant_welcome_img) }}
-              {{ wtf.form_field(base_form.restaurant_address_line) }}
+              {{ wtf.form_field(base_form.restaurant_address_line, value=restaurant_address_line) }}
               <div class="form-row">
                 <div class="form-group col-md-4">
-                  {{ wtf.form_field(base_form.restaurant_city) }}
+                  {{ wtf.form_field(base_form.restaurant_city, value=restaurant_city) }}
                 </div>
                 <div class="form-group col-md-4">
-                  {{ wtf.form_field(base_form.restaurant_country) }}
+                  {{ wtf.form_field(base_form.restaurant_country, value=restaurant_country) }}
                 </div>
                 <div class="form-group col-md-4">
-                  {{ wtf.form_field(base_form.restaurant_zipcode) }}
+                  {{ wtf.form_field(base_form.restaurant_zipcode, value=restaurant_zipcode) }}
                 </div>
               </div>
-              {{ wtf.form_field(base_form.restaurant_email) }}
-              {{ wtf.form_field(base_form.restaurant_phone) }}
+              {{ wtf.form_field(base_form.restaurant_email, value=restaurant_email) }}
+              {{ wtf.form_field(base_form.restaurant_phone, value=restaurant_phone_number) }}
               {{ wtf.form_field(base_form.restaurant_logo) }}
               {{ wtf.form_field(base_form.base_submit, class="btn btn-primary text-uppercase float-right") }}
               <!-- <button class="btn btn-primary text-uppercase">commit changes</button> -->
@@ -106,10 +106,10 @@
               {{ opening_form.csrf_token }}
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  {{ wtf.form_field(opening_form.from_hour) }}
+                  {{ wtf.form_field(opening_form.from_hour, value=from_date) }}
                 </div>
                 <div class="form-group col-md-6">
-                  {{ wtf.form_field(opening_form.to_hour) }}
+                  {{ wtf.form_field(opening_form.to_hour, value=to_date) }}
                 </div>
               </div>
               {{ wtf.form_field(opening_form.opening_days) }}
@@ -133,11 +133,11 @@
             <hr class="line mt-3">
             <form class="form-group" action="/RPOSS/owner_panel/restaurant" method="post">
               {{ media_form.csrf_token }}
-              {{ wtf.form_field(media_form.restaurant_facebook) }}
-              {{ wtf.form_field(media_form.restaurant_twitter) }}
-              {{ wtf.form_field(media_form.restaurant_snapchat) }}
-              {{ wtf.form_field(media_form.restaurant_instagram) }}
-              {{ wtf.form_field(media_form.restaurant_yelp) }}
+              {{ wtf.form_field(media_form.restaurant_facebook, value=facebook) }}
+              {{ wtf.form_field(media_form.restaurant_twitter, value=twitter) }}
+              {{ wtf.form_field(media_form.restaurant_snapchat, value=snapchat) }}
+              {{ wtf.form_field(media_form.restaurant_instagram, value=instagram) }}
+              {{ wtf.form_field(media_form.restaurant_yelp, value=yelp) }}
               {{ wtf.form_field(media_form.media_submit, class="btn btn-primary text-uppercase float-right") }}
             </form>
           </div><!-- /.Main Column -->
@@ -161,5 +161,17 @@
 <script src="{{ url_for("owner_panel.static", filename="js/lib/bootstrap.min.js") }}"></script>
 <!-- Scroll Reveal Library -->
 <script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+<script>
+  $(function() {
+
+    $('.form-group').find('textarea').val("{{ restaurant_about }}")
+
+    for (var i = 1; i < $('.form-group').find('option').length + 1; i++){ 
+      if ({{ working_days | safe }}.indexOf($('.form-group').find('option:nth-child(' + i + ')').val()) > -1) {
+        $('.form-group').find('option:nth-child(' + i + ')').attr("selected", true)
+      }
+    }
+  });
+</script>
 </body>
 </html>

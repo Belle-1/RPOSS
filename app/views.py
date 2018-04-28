@@ -18,7 +18,7 @@ def login():
 
         # user name exist in db and its password is valid
         user = db_session.query(Employee).filter_by(employee_username=user_name).first()
-        if user is not None and user.is_correct_password(password):
+        if user is not None and user.is_correct_password(password) and user.employee_status == 'active':
             # user is owner -> transmit to owner panel
             if user.employee_id == 1:
                 session['owner_logged_in'] = True

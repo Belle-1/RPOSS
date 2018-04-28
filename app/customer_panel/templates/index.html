@@ -46,11 +46,11 @@
   </nav> <!-- END Navigation Bar -->
 <!-- Welcome Section -->
   <div class="welcome-section">
-  	<img src="{{ url_for('owner_panel.static', filename=restaurant_img) }}" class="img-fluid" alt="Responsive image">
+  	<img src="{{ url_for('owner_panel.static', filename=restaurant_img) }}" class="img-fluid img-style" alt="Responsive image">
     <div>
   	<h3 class="scroll text-uppercase font-weight-bold">welcome to</h3>
   	<h1 class="scroll text-uppercase font-weight-bold">{{ restaurant_name }}</h1>
-    <a href="{{ url_for('customer.menu') }}" class="scroll btn btn-lg btn-outline-secondary" name="online-ordering">order online</a>
+    <a href="{{ url_for('customer.menu') }}" class="scroll btn btn-lg btn-dark text-uppercase mt-4" name="online-ordering">order online</a>
     </div>
   </div><!-- END Welcome Section -->
 <!-- About Section -->
@@ -62,11 +62,11 @@
   </div><!-- END About Section -->
 <!-- Menu Section -->
   <div id="menu" class="menu-section mt-5">
-    <img src="{{ url_for('owner_panel.static', filename=menu_image) }}" id='menu-img' class='img-fluid' alt="Responsive image">
-      <div class="scroll container text-center">
+    <img src="{{ url_for('owner_panel.static', filename=menu_image) }}" id='menu-img' class='img-fluid img-style' alt="Responsive image">
+      <div class="scroll container center text-center">
         <p>{{ restaurant_menu_description }}</p>
         <hr class="scroll line">
-        <a href="{{ url_for('customer.menu') }}" class="scroll btn btn-lg btn-secondary" name="online-ordering">go to menu</a>
+        <a href="{{ url_for('customer.menu') }}" class="scroll btn btn-lg btn-dark text-uppercase mt-4" name="online-ordering">go to menu</a>
       </div>
   </div><!-- END Menu Section -->
 <!-- Location Section -->
