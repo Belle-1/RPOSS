@@ -8,7 +8,11 @@ from app.models import RestaurantBaseInformation, OpeningHours, SocialMedia, \
     MenuSetUp, MenuItems as MenuItemsTable, PickUp, Delivery, OrdersTiming, Employee
 from werkzeug.utils import secure_filename
 import os
-from app.utilities import query, working_days
+from app.utilities import working_days, restaurant_name, restaurant_about, restaurant_address_line, restaurant_city, \
+    restaurant_country, restaurant_zipcode, restaurant_email, restaurant_phone_number, from_date, to_date, \
+    facebook, twitter, snapchat, instagram, yelp, menu_description, delivery_allowed, pickup_allowed, \
+    delivery_tax, pickup_tax, delivery_charges, min_amount, max_amount, delivery_time, preparing_time, \
+    pending_time
 
 
 Omod = Blueprint('owner_panel', __name__,
@@ -73,29 +77,30 @@ def restaurant():
                             data[k] = v[8:]
                         elif v.lower().startswith('http://'):
                             data[k] = v[7:]
-
+                        else:
+                            data[k] = v
                 update_social_media(data)
 
         return render_template('owner_restaurant.html',
                                base_form=base_form,
                                opening_form=opening_form,
                                media_form=media_form,
-                               restaurant_name=query(model_column=RestaurantBaseInformation.restaurant_name),
-                               restaurant_about=query(model_column=RestaurantBaseInformation.restaurant_about),
-                               restaurant_address_line=query(model_column=RestaurantBaseInformation.restaurant_address_line),
-                               restaurant_city=query(model_column=RestaurantBaseInformation.restaurant_city),
-                               restaurant_country=query(model_column=RestaurantBaseInformation.restaurant_country),
-                               restaurant_zipcode=query(model_column=RestaurantBaseInformation.restaurant_zipcode),
-                               restaurant_email=query(model_column=RestaurantBaseInformation.restaurant_email),
-                               restaurant_phone_number=query(model_column=RestaurantBaseInformation.restaurant_phone_number),
-                               from_date=query(model_column=OpeningHours.from_date),
-                               to_date=query(model_column=OpeningHours.to_date),
+                               restaurant_name=restaurant_name,
+                               restaurant_about=restaurant_about,
+                               restaurant_address_line=restaurant_address_line,
+                               restaurant_city=restaurant_city,
+                               restaurant_country=restaurant_country,
+                               restaurant_zipcode=restaurant_zipcode,
+                               restaurant_email=restaurant_email,
+                               restaurant_phone_number=restaurant_phone_number,
+                               from_date=from_date,
+                               to_date=to_date,
                                working_days=working_days,
-                               facebook=query(model_column=SocialMedia.site_link, model_filter=SocialMedia.site_name,filter_by='facebook'),
-                               twitter=query(model_column=SocialMedia.site_link,model_filter=SocialMedia.site_name, filter_by='twitter'),
-                               snapchat=query(model_column=SocialMedia.site_link, model_filter=SocialMedia.site_name, filter_by='snapchat'),
-                               instagram=query(model_column=SocialMedia.site_link, model_filter=SocialMedia.site_name,filter_by='instagram'),
-                               yelp=query(model_column=SocialMedia.site_link, model_filter=SocialMedia.site_name, filter_by='yelp'),
+                               facebook=facebook,
+                               twitter=twitter,
+                               snapchat=snapchat,
+                               instagram=instagram,
+                               yelp=yelp,
         )
     return redirect(url_for('RPOSS.login'))
 
@@ -135,7 +140,7 @@ def menu():
         return render_template('owner_menu.html',
                                menu_setup_form=menu_setup_form,
                                menu_items_form=menu_items_form,
-                               menu_description=query(model_column=MenuSetUp.restaurant_description))
+                               menu_description=menu_description)
     return redirect(url_for('RPOSS.login'))
 
 
@@ -217,16 +222,16 @@ def orders_hampers():
         return render_template('owner_orders_hampers.html',
                                orders_methods_form=orders_methods_form,
                                orders_timing_form=orders_timing_form,
-                               allow_pickup=query(model_column=PickUp.allow_pickup),
-                               allow_delivery=query(model_column=Delivery.allow_delivery),
-                               delivery_taxes=query(model_column=Delivery.delivery_tax),
-                               pickup_tax=query(model_column=PickUp.pickup_tax),
-                               delivery_charges=query(model_column=Delivery.delivery_charges),
-                               min_amount=query(model_column=Delivery.min_amount),
-                               max_amount=query(model_column=Delivery.max_amount),
-                               delivery_time=query(model_column=OrdersTiming.delivery_time),
-                               preparing_time=query(model_column=OrdersTiming.preparing_time),
-                               pending_time=query(model_column=OrdersTiming.pending_time))
+                               allow_pickup=pickup_allowed,
+                               allow_delivery=delivery_allowed,
+                               delivery_taxes=delivery_tax,
+                               pickup_tax=pickup_tax,
+                               delivery_charges=delivery_charges,
+                               min_amount=min_amount,
+                               max_amount=max_amount,
+                               delivery_time=delivery_time,
+                               preparing_time=preparing_time,
+                               pending_time=pending_time)
     return redirect(url_for('RPOSS.login'))
 
 
@@ -296,6 +301,7 @@ def add_menu_item(data):
                                   item_image=data['item_image'])
         db_session.add(new_item)
         db_session.commit()
+        db_session.refresh(new_item)
         flash('Item {} added successfully .'.format(data['item_name']), 'success')
     except exc.SQLAlchemyError:
         db_session.rollback()
@@ -310,6 +316,7 @@ def add_employee(data):
         new_employee._set_password = data['employee_password']
         db_session.add(new_employee)
         db_session.commit()
+        db_session.refresh(new_employee)
         flash('Employee {} added successfully .'.format(data['employee_username']), 'success')
     except exc.SQLAlchemyError as e:
         db_session.rollback()

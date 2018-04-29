@@ -33,6 +33,14 @@ def login():
                 session['employee_logged_in'] = True
                 session['employee_username'] = user.employee_username
                 return redirect(url_for('staff.all_orders'))
+    elif session.get('owner_logged_in'):
+        return render_template('owner_restaurant.html',
+                               base_form=RestaurantBaseForm(),
+                               opening_form=RestaurantOpeningHoursForm(),
+                               media_form=RestaurantSocialMediaForm(),
+                               owner_username=session['owner_username'])
+    elif session.get('employee_logged_in'):
+        return redirect(url_for('staff.all_orders'))
     return render_template('log_in.html',
                            form=form)
 

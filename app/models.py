@@ -45,7 +45,7 @@ class RestaurantBaseInformation(Base):
 
     id = Column(Integer(), primary_key=True, autoincrement=True)
     restaurant_name = Column(String(150))
-    restaurant_about = Column(String(240))
+    restaurant_about = Column(String(350))
     restaurant_img = Column(String(240))
     restaurant_address_line = Column(String(150))
     restaurant_city = Column(String(64))

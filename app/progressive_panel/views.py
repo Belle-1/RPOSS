@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, jsonify, session, redirect, url_fo
 from sqlalchemy import exc, and_, or_
 from app import db_session
 from app.models import Orders, Customers, OrdersTiming, OrderItems, Delivery, RestaurantBaseInformation
-from app.utilities import query
+from app.utilities import pending_time, preparing_time, delivery_time, delivery_charges, delivery_tax
 import datetime
 from instance.config import confirm_customer
 
@@ -115,7 +115,7 @@ def fetch_orders(page):
                                         'customer_email': customer.customer_email,
                                         'order_id': order.order_id,
                                         'status': 'pending',
-                                        'pending_remaining_time': query(model_column=OrdersTiming.pending_time),
+                                        'pending_remaining_time': pending_time,
                                         'date_made':  order.datetime_made.strftime('%b %d, %Y') if order.datetime_made else '',
                                         'time_made': order.datetime_made.strftime('%H:%M %p') if order.datetime_made else '',
                                         'order_method': order.order_method,
@@ -124,8 +124,8 @@ def fetch_orders(page):
                                         'state': order.state,
                                         'zipcode': order.zipcode,
                                         'notes': order.notes,
-                                        'delivery_charges': query(model_column=Delivery.delivery_charges),
-                                        'delivery_taxes': query(model_column=Delivery.delivery_tax),
+                                        'delivery_charges': delivery_charges,
+                                        'delivery_taxes': delivery_tax,
                                         'items': [item.serialize for item in db_session.query(OrderItems).filter(OrderItems.order_id == order.order_id).all()],
                                         'total': sum(float(item.item_price) * item.item_quantity for item in db_session.query(OrderItems).filter(OrderItems.order_id == order.order_id).all())}
 
@@ -136,8 +136,8 @@ def fetch_orders(page):
             if order:
                 data[order.order_id] = {'order_id': order.order_id,
                                         'order_method': order.order_method,
-                                        'preparing_remaining_time': query(model_column=OrdersTiming.preparing_time),
-                                        'delivery_remaining_time': query(model_column=OrdersTiming.delivery_time),
+                                        'preparing_remaining_time': preparing_time,
+                                        'delivery_remaining_time': delivery_time,
                                         'date_made':  order.datetime_confirmed.strftime('%b %d, %Y') if order.datetime_confirmed else '',
                                         'time_made': order.datetime_confirmed.strftime('%H:%M %p') if order.datetime_confirmed else '',
                                         'notes': order.notes,
