@@ -8,11 +8,8 @@ from app.models import RestaurantBaseInformation, OpeningHours, SocialMedia, \
     MenuSetUp, MenuItems as MenuItemsTable, PickUp, Delivery, OrdersTiming, Employee
 from werkzeug.utils import secure_filename
 import os
-from app.utilities import working_days, restaurant_name, restaurant_about, restaurant_address_line, restaurant_city, \
-    restaurant_country, restaurant_zipcode, restaurant_email, restaurant_phone_number, from_date, to_date, \
-    facebook, twitter, snapchat, instagram, yelp, menu_description, delivery_allowed, pickup_allowed, \
-    delivery_tax, pickup_tax, delivery_charges, min_amount, max_amount, delivery_time, preparing_time, \
-    pending_time
+import app.utilities
+from importlib import reload
 
 
 Omod = Blueprint('owner_panel', __name__,
@@ -80,27 +77,27 @@ def restaurant():
                         else:
                             data[k] = v
                 update_social_media(data)
-
+        reload(app.utilities)
         return render_template('owner_restaurant.html',
                                base_form=base_form,
                                opening_form=opening_form,
                                media_form=media_form,
-                               restaurant_name=restaurant_name,
-                               restaurant_about=restaurant_about,
-                               restaurant_address_line=restaurant_address_line,
-                               restaurant_city=restaurant_city,
-                               restaurant_country=restaurant_country,
-                               restaurant_zipcode=restaurant_zipcode,
-                               restaurant_email=restaurant_email,
-                               restaurant_phone_number=restaurant_phone_number,
-                               from_date=from_date,
-                               to_date=to_date,
-                               working_days=working_days,
-                               facebook=facebook,
-                               twitter=twitter,
-                               snapchat=snapchat,
-                               instagram=instagram,
-                               yelp=yelp,
+                               restaurant_name=app.utilities.restaurant_name,
+                               restaurant_about=app.utilities.restaurant_about,
+                               restaurant_address_line=app.utilities.restaurant_address_line,
+                               restaurant_city=app.utilities.restaurant_city,
+                               restaurant_country=app.utilities.restaurant_country,
+                               restaurant_zipcode=app.utilities.restaurant_zipcode,
+                               restaurant_email=app.utilities.restaurant_email,
+                               restaurant_phone_number=app.utilities.restaurant_phone_number,
+                               from_date=app.utilities.from_date,
+                               to_date=app.utilities.to_date,
+                               working_days=app.utilities.working_days,
+                               facebook=app.utilities.facebook,
+                               twitter=app.utilities.twitter,
+                               snapchat=app.utilities.snapchat,
+                               instagram=app.utilities.instagram,
+                               yelp=app.utilities.yelp,
         )
     return redirect(url_for('RPOSS.login'))
 
@@ -136,11 +133,11 @@ def menu():
                 }
 
                 add_menu_item(data)
-
+        reload(app.utilities)
         return render_template('owner_menu.html',
                                menu_setup_form=menu_setup_form,
                                menu_items_form=menu_items_form,
-                               menu_description=menu_description)
+                               menu_description=app.utilities.menu_description)
     return redirect(url_for('RPOSS.login'))
 
 
@@ -218,20 +215,20 @@ def orders_hampers():
                 }
 
                 updatedata(data, OrdersTiming)
-
+        reload(app.utilities)
         return render_template('owner_orders_hampers.html',
                                orders_methods_form=orders_methods_form,
                                orders_timing_form=orders_timing_form,
-                               allow_pickup=pickup_allowed,
-                               allow_delivery=delivery_allowed,
-                               delivery_taxes=delivery_tax,
-                               pickup_tax=pickup_tax,
-                               delivery_charges=delivery_charges,
-                               min_amount=min_amount,
-                               max_amount=max_amount,
-                               delivery_time=delivery_time,
-                               preparing_time=preparing_time,
-                               pending_time=pending_time)
+                               allow_pickup=app.utilities.pickup_allowed,
+                               allow_delivery=app.utilities.delivery_allowed,
+                               delivery_taxes=app.utilities.delivery_tax,
+                               pickup_tax=app.utilities.pickup_tax,
+                               delivery_charges=app.utilities.delivery_charges,
+                               min_amount=app.utilities.min_amount,
+                               max_amount=app.utilities.max_amount,
+                               delivery_time=app.utilities.delivery_time,
+                               preparing_time=app.utilities.preparing_time,
+                               pending_time=app.utilities.pending_time)
     return redirect(url_for('RPOSS.login'))
 
 

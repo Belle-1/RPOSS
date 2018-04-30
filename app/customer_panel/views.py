@@ -3,13 +3,11 @@ from ..forms import ContactUsForm, CustomerDetailsForm, DeliveryCustomerDetailsF
 from instance.config import send_mail
 from app import db_session
 from app.models import MenuItems, Orders, OrderItems, Customers, SocialMedia
-from app.utilities import send_confirmation_code, is_number_valid, working_days, restaurant_name, restaurant_email, \
-    restaurant_img, restaurant_about, restaurant_logo, restaurant_address_line, restaurant_city, restaurant_country, \
-    restaurant_zipcode, restaurant_phone_number, from_date, to_date, menu_image, menu_description, delivery_allowed, \
-    delivery_charges, delivery_tax, min_amount, max_amount, pickup_allowed, pending_time, preparing_time, delivery_time
+import app.utilities
 from sqlalchemy import exc, and_
 from twilio.base.exceptions import TwilioException
 import datetime
+from importlib import reload
 
 
 Cmod = Blueprint('customer', __name__,
@@ -28,41 +26,42 @@ def index():
         customer_email = contact_us_form.customer_email.data
         customer_message = contact_us_form.customer_message.data
         try:
-            is_number_valid(customer_phone)
+            app.utilities.is_number_valid(customer_phone)
             send_mail(customer_name, customer_message, customer_email, customer_phone)
             flash('Message sent successfully.', 'success')
         except:
             flash('There was an error sending your message. Please, try again later.', 'danger')
-
+    reload(app.utilities)
     return render_template('index.html',
                            contact_us_form=contact_us_form,
                            social_media=db_session.query(SocialMedia).all(),
-                           restaurant_name=restaurant_name,
-                           restaurant_img=restaurant_img,
-                           restaurant_about=restaurant_about,
-                           restaurant_menu_description=menu_description,
-                           restaurant_logo=restaurant_logo,
-                           restaurant_address_line=restaurant_address_line,
-                           restaurant_city=restaurant_city,
-                           menu_image=menu_image,
-                           restaurant_country=restaurant_country,
-                           restaurant_zipcode=restaurant_zipcode,
-                           restaurant_email=restaurant_email,
-                           restaurant_phone_number=restaurant_phone_number,
-                           working_days=', '.join(working_days).title(),
-                           from_date=from_date.strftime('%H:%M %p'),
-                           to_date=to_date.strftime('%H:%M %p'),
+                           restaurant_name=app.utilities.restaurant_name,
+                           restaurant_img=app.utilities.restaurant_img,
+                           restaurant_about=app.utilities.restaurant_about,
+                           restaurant_menu_description=app.utilities.menu_description,
+                           restaurant_logo=app.utilities.restaurant_logo,
+                           restaurant_address_line=app.utilities.restaurant_address_line,
+                           restaurant_city=app.utilities.restaurant_city,
+                           menu_image=app.utilities.menu_image,
+                           restaurant_country=app.utilities.restaurant_country,
+                           restaurant_zipcode=app.utilities.restaurant_zipcode,
+                           restaurant_email=app.utilities.restaurant_email,
+                           restaurant_phone_number=app.utilities.restaurant_phone_number,
+                           working_days=', '.join(app.utilities.working_days).title(),
+                           from_date=app.utilities.from_date.strftime('%H:%M %p'),
+                           to_date=app.utilities.to_date.strftime('%H:%M %p'),
                            )
 
 
 @Cmod.route("/menu", methods=['GET'])
 def menu():
+    reload(app.utilities)
     return render_template('menu.html',
-                           allow_delivery=delivery_allowed,
-                           delivery_taxes=delivery_tax,
-                           delivery_charges=delivery_charges,
-                           min_amount=min_amount,
-                           max_amount=max_amount,
+                           allow_delivery=app.utilities.delivery_allowed,
+                           delivery_taxes=app.utilities.delivery_tax,
+                           delivery_charges=app.utilities.delivery_charges,
+                           min_amount=app.utilities.min_amount,
+                           max_amount=app.utilities.max_amount,
                            )
 
 
@@ -85,11 +84,12 @@ def get_menu_items():
 
 @Cmod.route("/few_steps", methods=['GET', 'POST'])
 def few_steps():
+    reload(app.utilities)
     customer_details_form = CustomerDetailsForm()
     delivery_customer_details_form = DeliveryCustomerDetailsForm()
 
     # checks if the customer's POST request is within restaurant's opening days/hours
-    within_working_day = ((from_date < datetime.datetime.now().time() < to_date) and datetime.datetime.now().strftime('%A').lower() in working_days)
+    within_working_day = ((app.utilities.from_date < datetime.datetime.now().time() < app.utilities.to_date) and datetime.datetime.now().strftime('%A').lower() in app.utilities.working_days)
     if request.method == 'POST' and within_working_day:
         order_method = request.values.get('order-method')
         verified = False
@@ -107,7 +107,7 @@ def few_steps():
             notes = customer_details_form.notes.data
 
             try:
-                is_number_valid(customer_phone)
+                app.utilities.is_number_valid(customer_phone)
 
                 customer = Customers(customer_name=customer_name,
                                      customer_phone=customer_phone,
@@ -147,12 +147,12 @@ def few_steps():
             return render_template('few_steps.html',
                                    customer_details_form=customer_details_form,
                                    delivery_customer_details_form=delivery_customer_details_form,
-                                   allow_delivery=delivery_allowed,
-                                   allow_pickup=pickup_allowed,
-                                   delivery_taxes=delivery_tax,
-                                   delivery_charges=delivery_charges,
-                                   min_amount=min_amount,
-                                   max_amount=max_amount,
+                                   allow_delivery=app.utilities.delivery_allowed,
+                                   allow_pickup=app.utilities.pickup_allowed,
+                                   delivery_taxes=app.utilities.delivery_tax,
+                                   delivery_charges=app.utilities.delivery_charges,
+                                   min_amount=app.utilities.min_amount,
+                                   max_amount=app.utilities.max_amount,
                                    )
         elif order_method == 'Delivery' and delivery_customer_details_form.validate():
             order_array = eval(request.cookies.get('order'))
@@ -168,7 +168,7 @@ def few_steps():
             notes = delivery_customer_details_form.notes.data
 
             try:
-                is_number_valid(customer_phone)
+                app.utilities.is_number_valid(customer_phone)
 
                 customer = Customers(customer_name=customer_name,
                                      customer_phone=customer_phone,
@@ -214,45 +214,45 @@ def few_steps():
             return render_template('few_steps.html',
                                    customer_details_form=customer_details_form,
                                    delivery_customer_details_form=delivery_customer_details_form,
-                                   allow_delivery=delivery_allowed,
-                                   allow_pickup=pickup_allowed,
-                                   delivery_taxes=delivery_tax,
-                                   delivery_charges=delivery_charges,
-                                   min_amount=min_amount,
-                                   max_amount=max_amount
+                                   allow_delivery=app.utilities.delivery_allowed,
+                                   allow_pickup=app.utilities.pickup_allowed,
+                                   delivery_taxes=app.utilities.delivery_tax,
+                                   delivery_charges=app.utilities.delivery_charges,
+                                   min_amount=app.utilities.min_amount,
+                                   max_amount=app.utilities.max_amount
                                    )
         return render_template('few_steps.html',
                                customer_details_form=customer_details_form,
                                delivery_customer_details_form=delivery_customer_details_form,
-                               allow_delivery=delivery_allowed,
-                               allow_pickup=pickup_allowed,
-                               delivery_taxes=delivery_tax,
-                               delivery_charges=delivery_charges,
-                               min_amount=min_amount,
-                               max_amount=max_amount,
+                               allow_delivery=app.utilities.delivery_allowed,
+                               allow_pickup=app.utilities.pickup_allowed,
+                               delivery_taxes=app.utilities.delivery_tax,
+                               delivery_charges=app.utilities.delivery_charges,
+                               min_amount=app.utilities.min_amount,
+                               max_amount=app.utilities.max_amount,
                                )
     elif request.method == 'POST' and within_working_day is False:
-        flash('You can place orders within working hours/days: {}, From {} To {}.'.format(', '.join(working_days).title(),
-                                                                                          from_date.strftime('%H:%M %p'),
-                                                                                          to_date.strftime('%H:%M %p')),
+        flash('You can place orders within working hours/days: {}, From {} To {}.'.format(', '.join(app.utilities.working_days).title(),
+                                                                                          app.utilities.from_date.strftime('%H:%M %p'),
+                                                                                          app.utilities.to_date.strftime('%H:%M %p')),
               'warning')
 
         return render_template('few_steps.html',
                                customer_details_form=customer_details_form,
                                delivery_customer_details_form=delivery_customer_details_form,
-                               allow_pickup=pickup_allowed,
-                               allow_delivery=delivery_allowed,
-                               delivery_taxes=delivery_tax,
-                               delivery_charges=delivery_charges,
-                               min_amount=min_amount,
-                               max_amount=max_amount,
+                               allow_pickup=app.utilities.pickup_allowed,
+                               allow_delivery=app.utilities.delivery_allowed,
+                               delivery_taxes=app.utilities.delivery_tax,
+                               delivery_charges=app.utilities.delivery_charges,
+                               min_amount=app.utilities.min_amount,
+                               max_amount=app.utilities.max_amount,
                                )
     return redirect(url_for('.menu',
-                            allow_delivery=delivery_allowed,
-                            delivery_taxes=delivery_tax,
-                            delivery_charges=delivery_charges,
-                            min_amount=min_amount,
-                            max_amount=max_amount))
+                            allow_delivery=app.utilities.delivery_allowed,
+                            delivery_taxes=app.utilities.delivery_tax,
+                            delivery_charges=app.utilities.delivery_charges,
+                            min_amount=app.utilities.min_amount,
+                            max_amount=app.utilities.max_amount))
 
 
 @Cmod.route("/phone_validation", methods=['GET', 'POST'])
@@ -269,27 +269,29 @@ def phone_validation():
                 flash('There was an error verifying your account. Please, try again later.', 'danger')
                 return render_template('phone_validation.html')
         elif session.get('verification_code') is None:
-            send_confirmation_code(session['customer_phone'])
+            app.utilities.send_confirmation_code(session['customer_phone'])
             return render_template('phone_validation.html')
         else:
             flash('Wrong code. Please try again.', 'danger')
             return render_template('phone_validation.html')
 
     elif request.method == 'GET' and session.get('customer_phone'):
-        send_confirmation_code(session['customer_phone'])
+        app.utilities.send_confirmation_code(session['customer_phone'])
         return render_template('phone_validation.html')
 
     elif session.get('customer_phone') is None:
+        reload(app.utilities)
         return redirect(url_for('.menu',
-                                allow_delivery=delivery_allowed,
-                                delivery_taxes=delivery_tax,
-                                delivery_charges=delivery_charges,
-                                min_amount=min_amount,
-                                max_amount=max_amount))
+                                allow_delivery=app.utilities.delivery_allowed,
+                                delivery_taxes=app.utilities.delivery_tax,
+                                delivery_charges=app.utilities.delivery_charges,
+                                min_amount=app.utilities.min_amount,
+                                max_amount=app.utilities.max_amount))
 
 
 @Cmod.route("/order_received", methods=['GET'])
 def order_received():
+    reload(app.utilities)
     if session.get('verified'):
         customer_info = db_session.query(Customers).filter(Customers.customer_id == session['customer_id']).one()
         customer_order_info = db_session.query(Orders).filter(Orders.customer_id == session['customer_id']).one()
@@ -298,8 +300,8 @@ def order_received():
         for item in customer_order_items:
             total += (float(item.item_price) * item.item_quantity)
         if customer_order_info.order_method == 'delivery':
-            a = float(total) + delivery_charges
-            b = a * (float(delivery_tax) / 100)
+            a = float(total) + app.utilities.delivery_charges
+            b = a * (float(app.utilities.delivery_tax) / 100)
             total = a + b
 
         session.pop('customer_id', None)
@@ -312,11 +314,11 @@ def order_received():
                                customer_order_info=customer_order_info,
                                customer_order_items=customer_order_items,
                                total=total,
-                               delivery_taxes=delivery_tax,
-                               delivery_charges=delivery_charges,
-                               pending_time=pending_time,
-                               delivery_time=datetime.timedelta(minutes=delivery_time),
-                               preparing_time=datetime.timedelta(minutes=preparing_time),
+                               delivery_taxes=app.utilities.delivery_tax,
+                               delivery_charges=app.utilities.delivery_charges,
+                               pending_time=app.utilities.pending_time,
+                               delivery_time=datetime.timedelta(minutes=app.utilities.delivery_time),
+                               preparing_time=datetime.timedelta(minutes=app.utilities.preparing_time),
                                )
     else:
         return redirect(url_for('.index'))
